@@ -1,0 +1,36 @@
+{
+  "name": "prototype",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@ethersproject/shims": "^5.7.0",
+    "@expo-google-fonts/poppins": "^0.2.3",
+    "@react-navigation/native": "^6.1.7",
+    "@react-navigation/native-stack": "^6.9.13",
+    "@tamagui/config": "^1.69.3",
+    "@types/react": "~18.2.14",
+    "ethers": "^6.7.1",
+    "expo": "~49.0.11",
+    "expo-app-loading": "^2.1.1",
+    "expo-font": "~11.4.0",
+    "expo-status-bar": "~1.6.0",
+    "react": "18.2.0",
+    "react-native": "0.72.4",
+    "react-native-get-random-values": "^1.9.0",
+    "react-native-secure-key-store": "^2.0.10",
+    "tamagui": "^1.69.3",
+    "typescript": "^5.1.3",
+    "@react-native-async-storage/async-storage": "1.18.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@babel/plugin-transform-private-methods": "^7.22.5"
+  },
+  "private": true
+}
