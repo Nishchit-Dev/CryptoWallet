@@ -30,8 +30,7 @@ export const CreateNewWallet = ({ navigation }) => {
 
   const SavePrivateKey = ()=>{
     if(Cred != null){
-      StorePrivateKey(Cred);
-        navigation.navigate("EncryptKey");
+        navigation.navigate("EncryptKey",{cred:Cred});
     }else{
       console.log("Cred is null")
     }

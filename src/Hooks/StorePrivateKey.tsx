@@ -1,17 +1,20 @@
-import RNSecureKeyStore, { ACCESSIBLE } from "react-native-secure-key-store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const StorePrivateKey = (value:object) => {
-  const jsonValue = JSON.stringify(value);
-  AsyncStorage.setItem("cred", jsonValue).catch((e) => {
-    console.log(e);
+export const StorePrivateKey = async(value: object, encryptionKey:string) => {
+  const jsonValue = JSON.stringify(value.route.params);
+    AsyncStorage.setItem("cred", jsonValue).catch((e) => {
+      console.log(e);
   });
+
+  GetPrivateKey("hello")
+
 };
 
-export const GetPrivateKey = async () => {
+export const GetPrivateKey = async (decryptionKey:string) => {
   const value = await AsyncStorage.getItem("cred");
-  console.log(value);
-  return value;
+  console.log("getPrivateKEy : ",value)
+  return value
+
 };
 
 export const RemovePrivateKey = () => {
