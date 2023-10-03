@@ -13,6 +13,8 @@ import { useFonts } from "expo-font";
 import { PrivateKeyScreen } from "./src/screens/privatekey/privateKeyScreen";
 import { ColorPallate } from "./src/customization/custom";
 import { EncryptKey } from "./src/screens/Pin/encryptPrivateKeyScreen";
+import { LandingScreen } from "./src/screens/LandingPage/LandingScreen";
+import { StatusBar } from "expo-status-bar";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +24,9 @@ export default function App() {
   const [fontsLoaded, fontError] = useFonts({
     Inter: require("./assets/Poppins-Regular.ttf"),
     InterBold: require("./assets/Poppins-Bold.ttf"),
+    InterRegular: require("./assets/Poppins-Regular.ttf"),
+    InterThin: require("./assets/Poppins-Bold.ttf"),
+
   });
 
   if(!fontsLoaded){
@@ -29,13 +34,14 @@ export default function App() {
   }
   return (
     <TamaguiProvider config={tamaguiConfig}>
-
+      
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{headerBackTitleVisible:false,headerShown:false}}>
           <Stack.Screen
             name="Crypto Wallet"
-            component={SignIn}
-            options={{ title: "Private Key" }}
+            component={LandingScreen}
+            
+            // options={{ title: "Private Key" }}
           ></Stack.Screen>
           <Stack.Screen name="EncryptKey" component={EncryptKey} />
           <Stack.Screen name="PriavteKey" component={PrivateKeyScreen} />

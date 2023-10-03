@@ -1,16 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const StorePrivateKey = async(value: object, encryptionKey:string) => {
+export const StorePrivateKey = async(value: object) => {
   const jsonValue = JSON.stringify(value.route.params);
     AsyncStorage.setItem("cred", jsonValue).catch((e) => {
       console.log(e);
   });
-
-  GetPrivateKey("hello")
-
+  GetPrivateKey()
 };
 
-export const GetPrivateKey = async (decryptionKey:string) => {
+export const GetPrivateKey = async () => {
   const value = await AsyncStorage.getItem("cred");
   console.log("getPrivateKEy : ",value)
   return value
