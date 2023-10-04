@@ -1,14 +1,21 @@
 import { ImageBackground, Dimensions, StatusBar } from "react-native";
 import { Text, View, YStack, Image, XStack, Button, Spinner } from "tamagui";
-import { GetPrivateKey } from "../../Hooks/StorePrivateKey";
+import {
+  DoesPrivateKeyExist,
+  GetPrivateKey,
+} from "../../Hooks/StorePrivateKey";
+import { useEffect, useState } from "react";
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 const imga = require("./bgcover.png");
 const arrow = require("./arrow_button.png");
 
 export const Loader = () => {
-  return <Spinner size="large" color="#C25ADC" paddingRight="$2"/>;
+  return <Spinner size="large" color="#C25ADC" paddingRight="$2" />;
 };
+export const Arrow = ()=>{
+  return <Image source={arrow} />
+}
 
 const LoadWallet = () => {
   return (
@@ -29,39 +36,44 @@ const LoadWallet = () => {
   );
 };
 
-const GettingStarted =()=>{
+const GettingStarted = () => {
   return (
     <XStack>
-    <Button
-      h={55}
-      borderRadius={999}
-      flex={1}
-      justifyContent="space-between"
-      alignItems="center"
-      iconAfter={Loader}
-    >
-      <Text fontFamily={"InterRegular"} fontSize={20}>
-        Get Started
-      </Text>
-    </Button>
-  </XStack>
-  )
-}
+      <Button
+        h={55}
+        borderRadius={999}
+        flex={1}
+        justifyContent="space-between"
+        alignItems="center"
+        iconAfter={Arrow}
+      >
+        <Text fontFamily={"InterRegular"} fontSize={20}>
+          Get Started
+        </Text>
+      </Button>
+    </XStack>
+  );
+};
 
-const CheckForKey = ()=>{
-  var flag =  GetPrivateKey().then(res=>{
-    console.log(res)
-    return res
-  })
-
-  if(flag !=null){
+function CheckForKey({ Flag }) {
+  if (Flag) {
     return <LoadWallet/>
   }
-  return <GettingStarted/>
-  
+  return (
+    <>
+      <GettingStarted/>
+    </>
+  );
 }
 
 export const LandingScreen = () => {
+  const [flag, setFlag] = useState(false);
+  useEffect(() => {
+    DoesPrivateKeyExist().then((res) => {
+      console.log(res);
+      setFlag(res);
+    });
+  });
   return (
     <View>
       <ImageBackground
@@ -86,7 +98,7 @@ export const LandingScreen = () => {
               </Text>
             </XStack>
 
-          {CheckForKey()}
+            <CheckForKey Flag={flag} />
           </YStack>
         </YStack>
       </ImageBackground>

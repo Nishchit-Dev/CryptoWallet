@@ -12,7 +12,15 @@ export const GetPrivateKey = async () => {
   const value = await AsyncStorage.getItem("cred");
   console.log("getPrivateKEy : ",value)
   return value
-
+};
+export const DoesPrivateKeyExist = async () => {
+  const value = await AsyncStorage.getItem("cred");
+  console.log("getPrivateKEy : ",value)
+  if(value == null){
+    return false
+  }else{
+    return true
+  }
 };
 
 export const RemovePrivateKey = () => {
