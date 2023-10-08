@@ -1,11 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import cryptoJs from "crypto-js";
 export const StorePrivateKey = async(value: object) => {
-  const jsonValue = JSON.stringify(value.route.params);
+  const jsonValue = JSON.stringify(value);
     AsyncStorage.setItem("cred", jsonValue).catch((e) => {
       console.log(e);
   });
   GetPrivateKey()
+  encryptKey()
 };
 
 export const GetPrivateKey = async () => {
@@ -28,3 +29,9 @@ export const RemovePrivateKey = () => {
     console.log(e);
   });
 };
+
+const encryptKey = ()=>{
+  let encryptedText = cryptoJs.AES.encrypt("msg","123").toString()
+  console.log(encryptKey)
+
+}

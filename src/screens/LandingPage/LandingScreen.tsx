@@ -18,6 +18,7 @@ export const Arrow = ()=>{
 }
 
 const LoadWallet = () => {
+
   return (
     <XStack>
       <Button
@@ -36,10 +37,14 @@ const LoadWallet = () => {
   );
 };
 
-const GettingStarted = () => {
+const GettingStarted = ({nav}) => {
+  const handlePress = ()=>{
+    nav.navigate("SettingUpWallet")
+  }
   return (
     <XStack>
       <Button
+      onPress={handlePress}
         h={55}
         borderRadius={999}
         flex={1}
@@ -55,18 +60,18 @@ const GettingStarted = () => {
   );
 };
 
-function CheckForKey({ Flag }) {
+function CheckForKey({ Flag,nav }) {
   if (Flag) {
-    return <LoadWallet/>
+    return <LoadWallet />
   }
   return (
     <>
-      <GettingStarted/>
+      <GettingStarted nav={nav}/>
     </>
   );
 }
 
-export const LandingScreen = () => {
+export const LandingScreen = ({navigation}) => {
   const [flag, setFlag] = useState(false);
   useEffect(() => {
     DoesPrivateKeyExist().then((res) => {
@@ -98,7 +103,7 @@ export const LandingScreen = () => {
               </Text>
             </XStack>
 
-            <CheckForKey Flag={flag} />
+            <CheckForKey Flag={flag} nav={navigation} />
           </YStack>
         </YStack>
       </ImageBackground>

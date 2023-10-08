@@ -1,6 +1,7 @@
 export const ColorPallate={
-    BrandColor:"#26D362",
+    BrandColor:"#C25ADC",
     NeutralColor:"#2C2C2C",
     RegularColor:"#FEFEFE",
     Important:"#DC4545",
+    BackgroundColor:"#151316"
 }

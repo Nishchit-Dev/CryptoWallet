@@ -13,7 +13,7 @@ export const CreateWallet = async()=>{
     console.log("address : ",address)
     console.log("publicKey : ",publicKey)
     console.log("worldlist : ",wordlist, typeof wordlist)
-
+    
     return {
         address,
         publicKey,
