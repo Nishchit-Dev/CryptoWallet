@@ -61,7 +61,7 @@ const GettingStarted = ({nav}) => {
 };
 
 function CheckForKey({ Flag,nav }) {
-  if (Flag) {
+  if (!Flag) {
     return <LoadWallet />
   }
   return (
