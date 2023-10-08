@@ -1,5 +1,5 @@
 import { ImageBackground, Dimensions, StatusBar } from "react-native";
-import { Text, View, YStack, Image, XStack, Button, Spinner } from "tamagui";
+import { Text, View, YStack, Image, XStack, Button, Spinner, createContext } from "tamagui";
 import {
   DoesPrivateKeyExist,
   GetPrivateKey,

@@ -10,9 +10,11 @@ import {
   Image,
 } from "tamagui";
 import { ColorPallate } from "../../customization/custom";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import { CreateWallet } from "../../utility/CreateWallet";
 import { StorePrivateKey } from "../../Hooks/StorePrivateKey";
+import { nav } from "../LandingPage/LandingScreen";
+import { NavigationContext } from "@react-navigation/native";
 
 const ListOfPhrase = ({ List, length }) => {
   return (
@@ -60,6 +62,8 @@ export const Menu = () => {
 };
 
 const SavePassword = ({ SavePswd }) => {
+  
+  
   return (
     <XStack>
       <Button
@@ -78,15 +82,19 @@ const SavePassword = ({ SavePswd }) => {
     </XStack>
   );
 };
+
 export const CreateNewWalletScreen = () => {
   const [cred, setCred] = useState(null);
   const [phrase, setPhase] = useState([]);
   const [PhraseListLeft, setLeftPhrase] = useState([]);
   const [PhraseListRight, setRightPhrase] = useState([]);
+  const ContextNav = useContext(NavigationContext)
+ 
   const onSavePassword = () => {
     if (cred != null) {
       console.log("cred");
       StorePrivateKey(cred);
+      ContextNav.navigate("Dashboard")
     }
   };
   useEffect(() => {
@@ -153,7 +161,7 @@ export const CreateNewWalletScreen = () => {
             </>
           ) : (
             <>
-              <Spinner size="large" />
+              <Spinner size="large" color={ColorPallate.BrandColor} />
             </>
           )}
         </YStack>
