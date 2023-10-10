@@ -1,10 +1,20 @@
 import { ImageBackground, Dimensions, StatusBar } from "react-native";
-import { Text, View, YStack, Image, XStack, Button, Spinner, createContext } from "tamagui";
+import {
+  Text,
+  View,
+  YStack,
+  Image,
+  XStack,
+  Button,
+  Spinner,
+  createContext,
+} from "tamagui";
 import {
   DoesPrivateKeyExist,
   GetPrivateKey,
 } from "../../Hooks/StorePrivateKey";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { NavigationContext, useNavigation } from "@react-navigation/native";
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 const imga = require("./bgcover.png");
@@ -13,12 +23,19 @@ const arrow = require("./arrow_button.png");
 export const Loader = () => {
   return <Spinner size="large" color="#C25ADC" paddingRight="$2" />;
 };
-export const Arrow = ()=>{
-  return <Image source={arrow} />
-}
+export const Arrow = () => {
+  return <Image source={arrow} />;
+};
 
 const LoadWallet = () => {
+  let nav_ = useContext(NavigationContext);
 
+  useEffect(() => {
+    setTimeout(() => {
+      nav_.navigate("Dashboard");
+      console.log("hello");
+    }, 1800);
+  }, []);
   return (
     <XStack>
       <Button
@@ -37,14 +54,14 @@ const LoadWallet = () => {
   );
 };
 
-const GettingStarted = ({nav}) => {
-  const handlePress = ()=>{
-    nav.navigate("SettingUpWallet")
-  }
+const GettingStarted = ({ nav }) => {
+  const handlePress = () => {
+    nav.navigate("SettingUpWallet");
+  };
   return (
     <XStack>
       <Button
-      onPress={handlePress}
+        onPress={handlePress}
         h={55}
         borderRadius={999}
         flex={1}
@@ -60,18 +77,18 @@ const GettingStarted = ({nav}) => {
   );
 };
 
-function CheckForKey({ Flag,nav }) {
-  if (!Flag) {
-    return <LoadWallet />
+function CheckForKey({ Flag, nav }) {
+  if (Flag) {
+    return <LoadWallet />;
   }
   return (
     <>
-      <GettingStarted nav={nav}/>
+      <GettingStarted nav={nav} />
     </>
   );
 }
 
-export const LandingScreen = ({navigation}) => {
+export const LandingScreen = ({ navigation }) => {
   const [flag, setFlag] = useState(false);
   useEffect(() => {
     DoesPrivateKeyExist().then((res) => {
@@ -79,6 +96,7 @@ export const LandingScreen = ({navigation}) => {
       setFlag(res);
     });
   });
+
   return (
     <View>
       <ImageBackground

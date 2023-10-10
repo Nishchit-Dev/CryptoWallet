@@ -13,11 +13,10 @@ export const StorePrivateKey = async (value: object) => {
 
 export const GetPrivateKey = async () => {
   const value = await AsyncStorage.getItem("cred");
-  decrypt(value).then((cred) => {
-    console.log(cred);
-  });
-  console.log("getPrivateKEy : ", value);
-  return value;
+  console.log(value)
+  return decrypt(value).then(cred=>{
+    console.log("cred: ",cred)
+    return JSON.parse(cred)})
 };
 export const DoesPrivateKeyExist = async () => {
   const value = await AsyncStorage.getItem("cred");
