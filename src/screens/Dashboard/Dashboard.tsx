@@ -7,11 +7,19 @@ import Swap from "../Assets/swap-ic.svg";
 import Receive from "../Assets/receive-ic.svg";
 import Scan from "../Assets/scan-ic.svg";
 import Matic from "../Assets/matic-ic.svg";
+import Copy from "../Assets/copy-ic.svg";
+
 import { Log } from "ethers";
-import { useFetchBalance } from "../../Hooks/RSS";
+import {
+  useFetchBalance,
+  useFetchHistroy,
+  useListenForWalletTransfer,
+  useSendCrypto,
+} from "../../Hooks/RSS";
 import { GetPrivateKey } from "../../Hooks/StorePrivateKey";
 import { useState, useEffect } from "react";
 import { shortAddress } from "../../utility/utility";
+import { QR, QrScanner } from "./QR";
 export const Menu = () => {
   return (
     <>
@@ -44,7 +52,9 @@ const ReceiveButton = () => {
   return (
     <>
       <YStack alignItems="center" gap={11}>
-        <Receive />
+        <XStack>
+          <Receive />
+        </XStack>
         <Text fontSize={12} fontFamily={"InterRegular"}>
           Receive
         </Text>
@@ -76,7 +86,7 @@ const FunctionButtons = () => {
   );
 };
 
-const AssetsView = ({ address,amount }) => {
+const AssetsView = ({ address, amount }) => {
   return (
     <>
       <XStack alignItems="center" justifyContent="center">
@@ -85,17 +95,26 @@ const AssetsView = ({ address,amount }) => {
         </Text>
       </XStack>
       <XStack alignItems="center" justifyContent="center" marginVertical={15}>
-        <YStack backgroundColor={ColorPallate.NeutralColor} borderRadius={999} paddingHorizontal={15} paddingVertical={5}>
-          <Text textAlign="center" fontFamily={"InterRegular"} >
-            {address  ? shortAddress(address):<Spinner size="small"/>}
+        <YStack
+          alignItems="center"
+          gap={5}
+          backgroundColor={ColorPallate.NeutralColor}
+          flexDirection={"row"}
+          borderRadius={999}
+          paddingHorizontal={15}
+          paddingVertical={5}
+        >
+          <Text textAlign="center" fontFamily={"InterRegular"}>
+            {address ? shortAddress(address) : <Spinner size="small" />}
           </Text>
+          <Copy height={18} width={18} />
         </YStack>
       </XStack>
       <XStack justifyContent="center" alignItems="center">
         <YStack alignItems="center" justifyContent="center">
           <XStack alignItems="center">
-          {!amount? <Spinner size="large"/>:<></>}
-            <Text fontSize={32} fontFamily={"InterBold"} color={"white"} >
+            {!amount ? <Spinner size="large" /> : <></>}
+            <Text fontSize={32} fontFamily={"InterBold"} color={"white"}>
               {amount}
             </Text>
             <Text
@@ -109,15 +128,14 @@ const AssetsView = ({ address,amount }) => {
           </XStack>
           <XStack>
             <Text fontSize={32} fontFamily={"InterBold"} color={"white"}>
-              ${(parseFloat(amount)*0.54).toFixed(4).split(".")[0]}.
+              ${(parseFloat(amount) * 0.54).toFixed(4).split(".")[0] || 0}.
             </Text>
             <Text
               fontSize={32}
               fontFamily={"InterBold"}
               color={ColorPallate.NeutralColor}
             >
-              {(parseFloat(amount)*0.54).toFixed(3).split(".")[1]}
-              
+              {(parseFloat(amount) * 0.54).toFixed(3).split(".")[1] || 0}
             </Text>
           </XStack>
         </YStack>
@@ -135,11 +153,22 @@ const ListOfTokens = ({ List }) => {
         </Text>
       </XStack>
       <YStack gap={17}>
-        {List.map((ele,i)=>{
-        
-        return <TokenComponent source={Eth} TokenName={ele.name||null} amount={ele.amount||null} />
+        {List.map((ele, i) => {
+          return (
+            <TokenComponent
+              source={Eth}
+              TokenName={ele.name || null}
+              amount={ele.amount || null}
+              key={i}
+            />
+          );
         })}
-        <TokenComponent source={Matic} TokenName={"Matic"} amount={null} />
+        <TokenComponent
+          source={Matic}
+          TokenName={"Matic"}
+          amount={null}
+          key={9999}
+        />
       </YStack>
     </>
   );
@@ -186,12 +215,21 @@ export const Divider = () => {
 export const Dashboard = ({ naviagte }) => {
   const [amount, setAmount] = useState("");
   const [address, setAddress] = useState("");
+
+  // let tx = {
+  //   sender:"0xCF9732Cb9A340432c8f2cfdF95151B95a1598518",
+  //   receipent:"0x744a09F5F8ceb8AB9135842fb2Cd167dA2F517aF",
+  //   amount:"0.001"
+  // }
+  // useSendCrypto("0xCF9732Cb9A340432c8f2cfdF95151B95a1598518",tx)
+  if (address != "") {
+    useFetchHistroy(address);
+  }
+
   useEffect(() => {
     GetPrivateKey().then((cred) => {
       setAddress(cred.address);
-      useFetchBalance(cred.address).then((balance) => {
-        setAmount(balance);
-      });
+      useFetchBalance(cred.address, amount, setAmount);
     });
   }, []);
 
@@ -208,7 +246,7 @@ export const Dashboard = ({ naviagte }) => {
         <Text fontSize={20} fontStyle="InterRegular">
           Account
         </Text>
-        <Scanner />
+        <QrScanner address={address} />
       </XStack>
 
       <YStack
@@ -226,7 +264,7 @@ export const Dashboard = ({ naviagte }) => {
         backgroundColor={ColorPallate.BackgroundColor}
       >
         <Divider />
-        <ListOfTokens List={[{name:"Eth",amount:"0.2"}]} />
+        <ListOfTokens List={[{ name: "Eth", amount: amount }]} />
       </YStack>
     </>
   );
