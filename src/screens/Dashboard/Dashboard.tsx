@@ -222,9 +222,7 @@ export const Dashboard = ({ naviagte }) => {
   //   amount:"0.001"
   // }
   // useSendCrypto("0xCF9732Cb9A340432c8f2cfdF95151B95a1598518",tx)
-  if (address != "") {
-    useFetchHistroy(address);
-  }
+  useFetchHistroy(address);
 
   useEffect(() => {
     GetPrivateKey().then((cred) => {
