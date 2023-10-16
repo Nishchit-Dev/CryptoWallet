@@ -13,7 +13,6 @@ import { ColorPallate } from "../../customization/custom";
 import { useEffect, useState,useContext } from "react";
 import { CreateWallet } from "../../utility/CreateWallet";
 import { StorePrivateKey } from "../../Hooks/StorePrivateKey";
-import { nav } from "../LandingPage/LandingScreen";
 import { NavigationContext } from "@react-navigation/native";
 
 const ListOfPhrase = ({ List, length }) => {
@@ -117,7 +116,7 @@ export const CreateNewWalletScreen = () => {
         paddingHorizontal={16}
         paddingTop={32}
         // marginTop={18}
-        backgroundColor={ColorPallate.BackgroundColor}
+        backgroundColor={ColorPallate.BlackBackgroundColor}
       >
         <Menu />
       </XStack>
@@ -125,7 +124,7 @@ export const CreateNewWalletScreen = () => {
         flex={1}
         p="$3"
         justifyContent="flex-start"
-        backgroundColor={ColorPallate.BackgroundColor}
+        backgroundColor={ColorPallate.BlackBackgroundColor}
         padding={16}
       >
         <YStack alignItems="center" justifyContent="flex-start">

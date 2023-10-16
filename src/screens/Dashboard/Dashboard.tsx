@@ -17,9 +17,10 @@ import {
   useSendCrypto,
 } from "../../Hooks/RSS";
 import { GetPrivateKey } from "../../Hooks/StorePrivateKey";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { shortAddress } from "../../utility/utility";
 import { QR, QrScanner } from "./QR";
+import { NavigationContext } from "@react-navigation/native";
 export const Menu = () => {
   return (
     <>
@@ -36,9 +37,13 @@ export const Scanner = () => {
 };
 
 const SendButton = () => {
+  const contextNav = useContext(NavigationContext)
+
   return (
     <>
-      <YStack alignItems="center" gap={11}>
+      <YStack alignItems="center" gap={11} onPress={()=>{
+        contextNav.navigate("SendCrypto")
+      }}>
         <Send />
         <Text fontSize={12} fontFamily={"InterRegular"}>
           Send
@@ -49,6 +54,7 @@ const SendButton = () => {
 };
 
 const ReceiveButton = () => {
+  
   return (
     <>
       <YStack alignItems="center" gap={11}>
@@ -222,7 +228,7 @@ export const Dashboard = ({ naviagte }) => {
   //   amount:"0.001"
   // }
   // useSendCrypto("0xCF9732Cb9A340432c8f2cfdF95151B95a1598518",tx)
-  useFetchHistroy(address);
+  // useFetchHistroy(address);
 
   useEffect(() => {
     GetPrivateKey().then((cred) => {
@@ -238,7 +244,7 @@ export const Dashboard = ({ naviagte }) => {
         paddingTop={32}
         alignItems="center"
         justifyContent="space-between"
-        backgroundColor={ColorPallate.BackgroundColor}
+        backgroundColor={ColorPallate.BlackBackgroundColor}
       >
         <Menu />
         <Text fontSize={20} fontStyle="InterRegular">
@@ -248,18 +254,18 @@ export const Dashboard = ({ naviagte }) => {
       </XStack>
 
       <YStack
-        backgroundColor={ColorPallate.BackgroundColor}
+        backgroundColor={ColorPallate.BlackBackgroundColor}
         paddingVertical={35}
       >
         <AssetsView address={address} amount={amount} />
       </YStack>
-      <YStack backgroundColor={ColorPallate.BackgroundColor} paddingBottom={42}>
+      <YStack backgroundColor={ColorPallate.BlackBackgroundColor} paddingBottom={42}>
         <FunctionButtons />
       </YStack>
       <YStack
         flex={1}
         paddingHorizontal={16}
-        backgroundColor={ColorPallate.BackgroundColor}
+        backgroundColor={ColorPallate.BlackBackgroundColor}
       >
         <Divider />
         <ListOfTokens List={[{ name: "Eth", amount: amount }]} />

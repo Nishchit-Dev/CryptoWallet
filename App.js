@@ -9,6 +9,7 @@ import { LandingScreen } from "./src/screens/LandingPage/LandingScreen";
 import { SettingUpWallet } from "./src/screens/SettingupWallet/SettingUpWallet";
 import { CreateNewWalletScreen } from "./src/screens/SignInMethod/privateKeyScreen";
 import { Dashboard } from "./src/screens/Dashboard/Dashboard";
+import { SendCypto } from "./src/screens/Send/SendCrypto";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,7 @@ export default function App() {
             component={CreateNewWalletScreen}
           />
           <Stack.Screen name="Dashboard" component={Dashboard} />
+          <Stack.Screen name="SendCrypto" component={SendCypto} />
         </Stack.Navigator>
       </NavigationContainer>
     </TamaguiProvider>

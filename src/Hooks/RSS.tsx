@@ -71,7 +71,7 @@ export const useFetchHistroy = async (address) => {
         run();
       });
     } else {
-     run()
+      run();
     }
   }, []);
   return data;
@@ -105,4 +105,26 @@ const extractPrivateKey = async (provider) => {
   const privateKey = await GetPrivateKey();
   const wallet = ethers.Wallet.fromPhrase(privateKey.phrase, provider);
   return wallet.privateKey;
+};
+
+export const useEstimateGas = () => {
+  const [gas, setGas] = useState({});
+  useEffect(() => {
+    const estiamte = async () => {
+      const infuraUrl =
+        "https://polygon-mumbai.infura.io/v3/6d41e19677f344b2a0a73aad3d9ed668";
+
+      const provider = new ethers.JsonRpcProvider(infuraUrl);
+      const estiamtedGas = await provider.getFeeData();
+      const gasInEthers  = ethers.formatEther(ethers.toNumber(estiamtedGas.gasPrice)*21000)
+      console.log("Units : ",ethers.formatEther(ethers.toNumber(estiamtedGas.gasPrice)*21000));
+      setGas({
+        gasPrice:estiamtedGas.gasPrice,
+        gasInEthers
+      })
+    };
+    estiamte();
+  }, []);
+
+  return gas
 };
