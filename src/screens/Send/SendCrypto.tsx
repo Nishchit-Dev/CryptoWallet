@@ -1,11 +1,12 @@
-import { XStack, Text, YStack, Input, Button } from "tamagui";
+import { XStack, Text, YStack, Input, Button, Spinner } from "tamagui";
 import Menu_ from "../Assets/menu-ic.svg";
 import Scan from "../Assets/scan-ic.svg";
 import { QrScanner } from "../Dashboard/QR";
 import { ColorPallate } from "../../customization/custom";
 import Eth from "../Assets/eth-ic.svg";
-import { useState } from "react";
-import { useEstimateGas } from "../../Hooks/RSS";
+import { useContext, useState } from "react";
+import { useEstimateGas, useSendCrypto } from "../../Hooks/RSS";
+import { NavigationContext } from "@react-navigation/native";
 export const Menu = () => {
   return (
     <>
@@ -59,14 +60,14 @@ const AssetView = ({ amount, setAmount }) => {
               value={amount}
               onChangeText={setAmount}
               backgroundColor={"$colorTransparent"}
-            defaultValue="0.01"
+              defaultValue="0.01"
               keyboardType="numeric"
               caretHidden
               textAlignVertical="bottom"
               fontSize={32}
               borderColor="$colorTransparent"
               focusStyle={{
-              borderColor:"$colorTransparent"
+                borderColor: "$colorTransparent",
               }}
               fontFamily={"InterBold"}
             />
@@ -114,7 +115,7 @@ const UserInput = ({ amount, gas }) => {
               borderColor={"$colorTransparent"}
               backgroundColor={ColorPallate.BlackLightBackgroundColor}
               placeholder="Recevier's Address"
-              value={gas + " Eth"}
+              value={parseFloat(gas).toFixed(7) + " Eth"}
               disabled
               keyboardType="numeric"
             />
@@ -131,13 +132,12 @@ const UserInput = ({ amount, gas }) => {
               borderRadius={13}
               paddingHorizontal={16}
               paddingVertical={10}
-              flexDirection="row"
               alignItems="center"
               backgroundColor={ColorPallate.BlackLightBackgroundColor}
             >
               <Text fontFamily={"InterRegular"}>Amount + Gas Fees = </Text>
               <Text textAlign="center" fontFamily={"InterBold"} fontSize={32}>
-                {(parseFloat(gas) + parseFloat(amount)).toFixed(2)} Eth
+                {(parseFloat(gas) + parseFloat(amount)).toFixed(5)} Eth
               </Text>
             </YStack>
           </YStack>
@@ -148,8 +148,29 @@ const UserInput = ({ amount, gas }) => {
 };
 export const SendCypto = ({ address }) => {
   const [amount, setAmount] = useState("0.01");
-  
-  const gas = useEstimateGas()
+  const [loading, setLoading] = useState(false);
+  const gas = useEstimateGas();
+  const [completed, setCompleted] = useState(false);
+  const nav = useContext(NavigationContext);
+  const handleSend = () => {
+    let tx = {
+      sender: address || "0xCF9732Cb9A340432c8f2cfdF95151B95a1598518",
+      receipent: "0x744a09F5F8ceb8AB9135842fb2Cd167dA2F517aF",
+      amount: amount,
+    };
+    setLoading(!loading);
+    useSendCrypto(address, tx).then((flag) => {
+      setLoading(!loading);
+      setCompleted(!completed);
+      setTimeout(() => {
+
+        nav.goBack();
+      }, 15 * 1000);
+    });
+  };
+  const handleCancel=()=>{
+    nav.goBack()
+  }
   return (
     <>
       <XStack
@@ -187,20 +208,37 @@ export const SendCypto = ({ address }) => {
         <XStack flexDirection="row" gap={10}>
           <YStack flex={1}>
             <Button
-              backgroundColor={ColorPallate.BrandColor}
+              disabled={completed ? true : false}
+              backgroundColor={
+                !completed ? ColorPallate.BrandColor : ColorPallate.Success
+              }
               height={50}
+              onPress={handleSend}
               borderRadius={999}
               fontFamily={"InterRegular"}
               fontSize={20}
+              icon={
+                completed ? <></> : loading ? <Spinner size="large" /> : <></>
+              }
             >
-              send
+              {completed
+                ? "Successfully Completed"
+                : loading
+                ? "Sending"
+                : "Send"}
             </Button>
           </YStack>
-          <YStack flex={1}>
-            <Button height={50} borderRadius={999} fontSize={20}>
-              cancel
-            </Button>
-          </YStack>
+          {!loading ? (
+            <>
+              <YStack flex={1}>
+                <Button onPress={handleCancel} height={50} borderRadius={999} fontSize={20}>
+                  cancel
+                </Button>
+              </YStack>
+            </>
+          ) : (
+            <></>
+          )}
         </XStack>
       </XStack>
     </>

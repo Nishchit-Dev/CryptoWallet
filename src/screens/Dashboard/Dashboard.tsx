@@ -222,12 +222,7 @@ export const Dashboard = ({ naviagte }) => {
   const [amount, setAmount] = useState("");
   const [address, setAddress] = useState("");
 
-  // let tx = {
-  //   sender:"0xCF9732Cb9A340432c8f2cfdF95151B95a1598518",
-  //   receipent:"0x744a09F5F8ceb8AB9135842fb2Cd167dA2F517aF",
-  //   amount:"0.001"
-  // }
-  // useSendCrypto("0xCF9732Cb9A340432c8f2cfdF95151B95a1598518",tx)
+
   // useFetchHistroy(address);
 
   useEffect(() => {

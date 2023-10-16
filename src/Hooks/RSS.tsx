@@ -96,8 +96,12 @@ export const useSendCrypto = async (address, txData) => {
     gasPrice: gasPrice.gasPrice,
   };
 
-  walletSigner.sendTransaction(tx).then((res) => {
-    console.log(res);
+  return await walletSigner.sendTransaction(tx).then((responce) => {
+    console.log(responce);
+
+    return responce.wait().then(()=>{
+      return true
+    })
   });
 };
 
@@ -120,7 +124,7 @@ export const useEstimateGas = () => {
       console.log("Units : ",ethers.formatEther(ethers.toNumber(estiamtedGas.gasPrice)*21000));
       setGas({
         gasPrice:estiamtedGas.gasPrice,
-        gasInEthers
+        gasInEthers:gasInEthers
       })
     };
     estiamte();
