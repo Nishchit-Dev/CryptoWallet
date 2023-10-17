@@ -85,7 +85,7 @@ export const useSendCrypto = async (address, txData) => {
   const privateKey = await extractPrivateKey(provider);
   const wallet = new ethers.Wallet(privateKey);
   const walletSigner = wallet.connect(provider);
-  const gasPrice = await provider.getFeeData();
+  let gasPrice = await provider.getFeeData();
 
   const tx = {
     from: txData.sender,
@@ -99,9 +99,14 @@ export const useSendCrypto = async (address, txData) => {
   return await walletSigner.sendTransaction(tx).then((responce) => {
     console.log(responce);
 
-    return responce.wait().then(()=>{
-      return true
-    })
+    return responce.wait().then(async (res) => {
+      const confirm = await res.confirmations();
+      console.log(confirm);
+      return true;
+    });
+  }).catch(err=>{
+    console.log(err)
+    return false
   });
 };
 
@@ -119,16 +124,32 @@ export const useEstimateGas = () => {
         "https://polygon-mumbai.infura.io/v3/6d41e19677f344b2a0a73aad3d9ed668";
 
       const provider = new ethers.JsonRpcProvider(infuraUrl);
-      const estiamtedGas = await provider.getFeeData();
-      const gasInEthers  = ethers.formatEther(ethers.toNumber(estiamtedGas.gasPrice)*21000)
-      console.log("Units : ",ethers.formatEther(ethers.toNumber(estiamtedGas.gasPrice)*21000));
+      let estiamtedGas = await provider.getFeeData();
+      let gasInEthers = ethers.formatEther(
+        ethers.toNumber(estiamtedGas.gasPrice) * 21000
+      );
       setGas({
-        gasPrice:estiamtedGas.gasPrice,
-        gasInEthers:gasInEthers
-      })
+        gasPrice: estiamtedGas.gasPrice,
+        gasInEthers: gasInEthers,
+      });
+
+      setInterval(async () => {
+        estiamtedGas = await provider.getFeeData();
+        gasInEthers = ethers.formatEther(
+          ethers.toNumber(estiamtedGas.gasPrice) * 21000
+        );
+        console.log(
+          "Units : ",
+          ethers.formatEther(ethers.toNumber(estiamtedGas.gasPrice) * 21000)
+        );
+        setGas({
+          gasPrice: estiamtedGas.gasPrice,
+          gasInEthers: gasInEthers,
+        });
+      }, 15* 1000);
     };
     estiamte();
   }, []);
 
-  return gas
+  return gas || 0;
 };

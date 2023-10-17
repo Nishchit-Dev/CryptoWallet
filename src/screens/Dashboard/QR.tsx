@@ -1,8 +1,24 @@
 import { Button, Dialog, Text, XStack, YStack, Adapt, Sheet } from "tamagui";
 import { useState } from "react";
 import Scanner from "../Assets/scan-ic.svg";
+import Receive from "../Assets/receive-ic.svg";
+
 import QRCode from "react-native-qrcode-svg";
 import { CustomShortAddress, shortAddress } from "../../utility/utility";
+const ReceiveButton = () => {
+  return (
+    <>
+      <YStack alignItems="center" gap={11}>
+        <XStack>
+          <Receive />
+        </XStack>
+        <Text fontSize={12} fontFamily={"InterRegular"}>
+          Receive
+        </Text>
+      </YStack>
+    </>
+  );
+};
 
 export function QrScanner({ address }) {
   const [open, setOpen] = useState(false);
@@ -22,20 +38,19 @@ export function QrScanner({ address }) {
               setOpen(!open);
             }}
           >
-            <Scanner />
+            <ReceiveButton />
           </XStack>
         </Dialog.Trigger>
 
-        <Adapt when="sm" platform="touch" >
-          <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom >
-            <Sheet.Frame padding="$4" gap="$4" backgroundColor={"white"} >
+        <Adapt when="sm" platform="touch">
+          <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
+            <Sheet.Frame padding="$4" gap="$4" backgroundColor={"white"}>
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
-
               animation="lazy"
-                enterStyle={{ opacity: 0 }}
-                exitStyle={{ opacity: 0 }}
+              enterStyle={{ opacity: 0 }}
+              exitStyle={{ opacity: 0 }}
             />
           </Sheet>
         </Adapt>
@@ -70,11 +85,15 @@ export function QrScanner({ address }) {
             // gap="$4"
           >
             <Dialog.Title color={"black"}>Scan Qr</Dialog.Title>
-            <Dialog.Description color={"black"} fontSize={18} textAlign="center">
+            <Dialog.Description
+              color={"black"}
+              fontSize={18}
+              textAlign="center"
+            >
               {" "}
               Receive Crypto using Qr Code
             </Dialog.Description>
-            <XStack flexDirection={"column"} >
+            <XStack flexDirection={"column"}>
               <YStack
                 justifyContent="center"
                 alignItems="center"

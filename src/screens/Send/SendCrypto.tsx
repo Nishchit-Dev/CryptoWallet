@@ -74,7 +74,7 @@ const AssetView = ({ amount, setAmount }) => {
           </XStack>
           <XStack>
             <Text textAlign="center" fontSize={20} fontFamily={"InterRegular"}>
-              $ {(amount * 0.54).toFixed(2)}
+              ~ $ {(amount * 0.54).toFixed(7)}
             </Text>
           </XStack>
         </YStack>
@@ -95,20 +95,21 @@ const UserInput = ({ amount, gas }) => {
       >
         <XStack>
           <YStack flex={1}>
-            <Text fontSize={20} fontFamily={"InterRegular"}>
+            <Text fontSize={17} fontFamily={"InterRegular"}>
               Receiver
             </Text>
             <Input
               borderRightColor={"$colorTransparent"}
               backgroundColor={ColorPallate.BlackLightBackgroundColor}
               placeholder="Recevier's Address"
+              value={""}
             />
           </YStack>
         </XStack>
 
         <XStack>
           <YStack flex={1}>
-            <Text fontSize={20} fontFamily={"InterRegular"}>
+            <Text fontSize={17} fontFamily={"InterRegular"}>
               Gas Fees
             </Text>
             <Input
@@ -125,7 +126,7 @@ const UserInput = ({ amount, gas }) => {
         <XStack>
           <YStack flex={1}>
             <Text fontSize={20} fontFamily={"InterRegular"}>
-              Sub-Total
+              Total Amount
             </Text>
             <YStack
               justifyContent="space-between"
@@ -146,19 +147,21 @@ const UserInput = ({ amount, gas }) => {
     </>
   );
 };
-export const SendCypto = ({ address }) => {
-  const [amount, setAmount] = useState("0.01");
+export const SendCypto = ({ route }) => {
+  const [amount, setAmount] = useState("0.0001");
   const [loading, setLoading] = useState(false);
   const gas = useEstimateGas();
+  const address = route.params.address
   const [completed, setCompleted] = useState(false);
   const nav = useContext(NavigationContext);
   const handleSend = () => {
     let tx = {
-      sender: address || "0xCF9732Cb9A340432c8f2cfdF95151B95a1598518",
+      sender: address,
       receipent: "0x744a09F5F8ceb8AB9135842fb2Cd167dA2F517aF",
       amount: amount,
     };
     setLoading(!loading);
+    console.log(tx)
     useSendCrypto(address, tx).then((flag) => {
       setLoading(!loading);
       setCompleted(!completed);

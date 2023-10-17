@@ -1,4 +1,4 @@
-import { Text, View, XStack, YStack, Image, Spinner } from "tamagui";
+import { Text, XStack, YStack, Spinner } from "tamagui";
 import { ColorPallate } from "../../customization/custom";
 import Eth from "../Assets/eth-ic.svg";
 import Menu_ from "../Assets/menu-ic.svg";
@@ -9,17 +9,11 @@ import Scan from "../Assets/scan-ic.svg";
 import Matic from "../Assets/matic-ic.svg";
 import Copy from "../Assets/copy-ic.svg";
 
-import { Log } from "ethers";
-import {
-  useFetchBalance,
-  useFetchHistroy,
-  useListenForWalletTransfer,
-  useSendCrypto,
-} from "../../Hooks/RSS";
+import { useFetchBalance } from "../../Hooks/RSS";
 import { GetPrivateKey } from "../../Hooks/StorePrivateKey";
 import { useState, useEffect, useContext } from "react";
 import { shortAddress } from "../../utility/utility";
-import { QR, QrScanner } from "./QR";
+import { QrScanner } from "./QR";
 import { NavigationContext } from "@react-navigation/native";
 export const Menu = () => {
   return (
@@ -36,14 +30,18 @@ export const Scanner = () => {
   );
 };
 
-const SendButton = () => {
-  const contextNav = useContext(NavigationContext)
+const SendButton = ({address}) => {
+  const contextNav = useContext(NavigationContext);
 
   return (
     <>
-      <YStack alignItems="center" gap={11} onPress={()=>{
-        contextNav.navigate("SendCrypto")
-      }}>
+      <YStack
+        alignItems="center"
+        gap={11}
+        onPress={() => {
+          contextNav.navigate("SendCrypto",{address:address});
+        }}
+      >
         <Send />
         <Text fontSize={12} fontFamily={"InterRegular"}>
           Send
@@ -54,7 +52,6 @@ const SendButton = () => {
 };
 
 const ReceiveButton = () => {
-  
   return (
     <>
       <YStack alignItems="center" gap={11}>
@@ -82,11 +79,11 @@ const SwapButton = () => {
   );
 };
 
-const FunctionButtons = () => {
+const FunctionButtons = ({ address }) => {
   return (
     <XStack justifyContent="center" gap={30}>
-      <ReceiveButton />
-      <SendButton />
+      <QrScanner address={address} />
+      <SendButton address={address}/>
       <SwapButton />
     </XStack>
   );
@@ -221,7 +218,7 @@ export const Divider = () => {
 export const Dashboard = ({ naviagte }) => {
   const [amount, setAmount] = useState("");
   const [address, setAddress] = useState("");
-
+  const navigation = useContext(NavigationContext);
 
   // useFetchHistroy(address);
 
@@ -245,7 +242,11 @@ export const Dashboard = ({ naviagte }) => {
         <Text fontSize={20} fontStyle="InterRegular">
           Account
         </Text>
-        <QrScanner address={address} />
+        <XStack onPress={()=>{
+          navigation.navigate("Scanner")
+        }}>
+          <Scanner />
+        </XStack>
       </XStack>
 
       <YStack
@@ -254,8 +255,11 @@ export const Dashboard = ({ naviagte }) => {
       >
         <AssetsView address={address} amount={amount} />
       </YStack>
-      <YStack backgroundColor={ColorPallate.BlackBackgroundColor} paddingBottom={42}>
-        <FunctionButtons />
+      <YStack
+        backgroundColor={ColorPallate.BlackBackgroundColor}
+        paddingBottom={42}
+      >
+        <FunctionButtons address={address} />
       </YStack>
       <YStack
         flex={1}
