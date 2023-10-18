@@ -15,6 +15,7 @@ import { useState, useEffect, useContext } from "react";
 import { shortAddress } from "../../utility/utility";
 import { QrScanner } from "./QR";
 import { NavigationContext } from "@react-navigation/native";
+import { Nav } from "../NavBar/NavBar";
 export const Menu = () => {
   return (
     <>
@@ -30,7 +31,7 @@ export const Scanner = () => {
   );
 };
 
-const SendButton = ({address}) => {
+const SendButton = ({ address }) => {
   const contextNav = useContext(NavigationContext);
 
   return (
@@ -39,7 +40,7 @@ const SendButton = ({address}) => {
         alignItems="center"
         gap={11}
         onPress={() => {
-          contextNav.navigate("SendCrypto",{address:address});
+          contextNav.navigate("SendCrypto", { address: address });
         }}
       >
         <Send />
@@ -83,7 +84,7 @@ const FunctionButtons = ({ address }) => {
   return (
     <XStack justifyContent="center" gap={30}>
       <QrScanner address={address} />
-      <SendButton address={address}/>
+      <SendButton address={address} />
       <SwapButton />
     </XStack>
   );
@@ -219,7 +220,7 @@ export const Dashboard = ({ naviagte }) => {
   const [amount, setAmount] = useState("");
   const [address, setAddress] = useState("");
   const navigation = useContext(NavigationContext);
-
+  const [navFlag, setNav] = useState(false);
   // useFetchHistroy(address);
 
   useEffect(() => {
@@ -231,6 +232,14 @@ export const Dashboard = ({ naviagte }) => {
 
   return (
     <>
+      {navFlag ? (
+        <>
+          <Nav flag={navFlag} setFlag={setNav}/>
+        </>
+      ) : (
+        <></>
+      )}
+
       <XStack
         paddingHorizontal={16}
         paddingTop={32}
@@ -238,13 +247,22 @@ export const Dashboard = ({ naviagte }) => {
         justifyContent="space-between"
         backgroundColor={ColorPallate.BlackBackgroundColor}
       >
-        <Menu />
+        <XStack
+          onPress={() => {
+            setNav(!navFlag);
+          }}
+        >
+          <Menu />
+        </XStack>
+
         <Text fontSize={20} fontStyle="InterRegular">
           Account
         </Text>
-        <XStack onPress={()=>{
-          navigation.navigate("Scanner")
-        }}>
+        <XStack
+          onPress={() => {
+            navigation.navigate("Scanner");
+          }}
+        >
           <Scanner />
         </XStack>
       </XStack>
