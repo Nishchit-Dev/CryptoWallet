@@ -19,20 +19,19 @@ const TnxComponent = ({ TnxList, address }) => {
       {TnxList.length > 0 ? (
         TnxList.map((data, index) => {
           return (
-            <YStack key={index} gap={10} marginVertical={5} flex={1}>
-              <YStack
-                borderRadius={8}
-                flex={1}
-                gap={10}
-                flexDirection="row"
-                padding={3}
-                backgroundColor={ColorPallate.BlackLightBackgroundColor}
-              >
+            <YStack
+              key={index}
+              gap={10}
+              marginVertical={5}
+              flex={1}
+              borderRadius={8}
+              backgroundColor={ColorPallate.BlackLightBackgroundColor}
+            >
+              <YStack gap={10} flexDirection="row" padding={3}>
                 <YStack
                   marginLeft={3}
                   marginVertical={4}
                   width={5}
-                  borderRadius={99}
                   backgroundColor={SendOrReceiveStatus(data.from, address)}
                 ></YStack>
                 <YStack padding={8}>
@@ -51,7 +50,7 @@ const TnxComponent = ({ TnxList, address }) => {
                     To : {shortAddress(data.to)}
                   </Text>
                   <Text fontSize={20} fontFamily={"InterBold"}>
-                    Amount : {data.amount} Eth
+                    Amount : {parseFloat(data.amount).toFixed(7)} Eth
                   </Text>
                 </YStack>
               </YStack>
@@ -83,14 +82,14 @@ export const History = () => {
         flex={1}
         backgroundColor={ColorPallate.BlackBackgroundColor}
       >
-        <XStack flexDirection="column" gap={10}>
+        <XStack flexDirection="column" gap={10} flex={1}>
           <YStack>
             <Text fontSize={24} fontFamily={"InterRegular"}>
               Transaction History
             </Text>
           </YStack>
 
-          <ScrollView>
+          <ScrollView flex={1}>
             <TnxComponent TnxList={TnxList} address={address} />
           </ScrollView>
         </XStack>
