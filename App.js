@@ -11,6 +11,7 @@ import { CreateNewWalletScreen } from "./src/screens/SignInMethod/privateKeyScre
 import { Dashboard } from "./src/screens/Dashboard/Dashboard";
 import { SendCypto } from "./src/screens/Send/SendCrypto";
 import { Scanner } from "./src/screens/Scanner/Scanner";
+import { History } from "./src/screens/History/History";
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ export default function App() {
           <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="SendCrypto" component={SendCypto} />
           <Stack.Screen name="Scanner" component={Scanner}/>
+          <Stack.Screen name="History" component={History}/>
         </Stack.Navigator>
       </NavigationContainer>
     </TamaguiProvider>

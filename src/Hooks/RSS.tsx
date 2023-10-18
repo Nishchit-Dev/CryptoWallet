@@ -31,8 +31,8 @@ export const useFetchBalance = async (
   }, 10 * 1000);
 };
 
-export const useFetchHistroy = async (address) => {
-  const [data, setData] = useState("");
+export const useFetchHistroy =  (address) => {
+  const [data, setData] = useState([]);
   useEffect(() => {
     const run = async () => {
       const ChainID = 0x13881; // mumbai chain
@@ -40,22 +40,19 @@ export const useFetchHistroy = async (address) => {
         address || "0x744a09F5F8ceb8AB9135842fb2Cd167dA2F517aF";
       await Moralis.EvmApi.transaction
         .getWalletTransactions({
-          address: "0xCF9732Cb9A340432c8f2cfdF95151B95a1598518",
-          chain: 0x13881,
+          address: WalletAddresss,
+          chain: ChainID,
         })
         .then((res) => {
-          const data = res.result.map((data, i) => {
-            console.log({
-              from: data.from,
-              to: data.to,
-              amount: data.value.ether,
-            });
+          const TempData = res.result.map((data, i) => { 
             return {
-              from: data.from,
+              from: data.from.lowercase,
               to: data.to,
               amount: data.value.ether,
             };
           });
+          console.log(TempData)
+          setData(TempData)
         });
     };
 

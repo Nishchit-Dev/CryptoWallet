@@ -5,5 +5,7 @@ export const ColorPallate={
     Important:"#DC4545",
     BlackBackgroundColor:"#151316",
     BlackLightBackgroundColor:"#282629",
-    Success:"#0FAE47"
+    Success:"#0FAE47",
+    Failure:"#E36060",
+    FontLightColor:"#767676"
 }

@@ -4,12 +4,11 @@ import { BlurView } from "expo-blur";
 import { useState } from "react";
 import Exit from "../Assets/exit-ic.svg";
 import { Dimensions } from "react-native";
-import {useContext} from "react"
+import { useContext } from "react";
 import { NavigationContext } from "@react-navigation/native";
 
 export const Nav = ({ flag, setFlag }) => {
-    const Navigation = useContext(NavigationContext)
-  const [open, setStatus] = useState(false);
+  const Navigation = useContext(NavigationContext);
   return (
     <XStack
       id="nav"
@@ -46,11 +45,11 @@ export const Nav = ({ flag, setFlag }) => {
           marginVertical={20}
           padding={16}
           flex={1}
-        //   fullscreen
+          //   fullscreen
           flexDirection="column"
           //   animation={"medium"}
         >
-          <YStack  flexDirection="row" justifyContent="space-between">
+          <YStack flexDirection="row" justifyContent="space-between">
             <Text fontSize={32} color={"white"} fontFamily={"InterRegular"}>
               Menu
             </Text>
@@ -62,19 +61,26 @@ export const Nav = ({ flag, setFlag }) => {
               <Exit />
             </XStack>
           </YStack>
-          
-          <XStack gap={20} justifyContent="center" alignItems="center" flexDirection="column">
+
+          <XStack
+            gap={20}
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+          >
             <YStack
               bg={ColorPallate.BlackLightBackgroundColor}
               paddingHorizontal={10}
               borderRadius={9}
-              onPress={()=>{
+              onPress={() => {
                 console.log(
-                Navigation.getState().routes[Navigation.getState().index].name
-                )
-                let currentRoute =  Navigation.getState().routes[Navigation.getState().index].name
-                if(currentRoute != "Dashboard"){
-                    Navigation.navigate("Dashboard")
+                  Navigation.getState().routes[Navigation.getState().index].name
+                );
+                let currentRoute =
+                  Navigation.getState().routes[Navigation.getState().index]
+                    .name;
+                if (currentRoute != "Dashboard") {
+                  Navigation.navigate("Dashboard");
                 }
               }}
             >
@@ -86,13 +92,15 @@ export const Nav = ({ flag, setFlag }) => {
               bg={ColorPallate.BlackLightBackgroundColor}
               paddingHorizontal={10}
               borderRadius={9}
-              onPress={()=>{
+              onPress={() => {
                 console.log(
-                Navigation.getState().routes[Navigation.getState().index].name
-                )
-                let currentRoute =  Navigation.getState().routes[Navigation.getState().index].name
-                if(currentRoute != "SendCrypto"){
-                    Navigation.navigate("SendCrypto")
+                  Navigation.getState().routes[Navigation.getState().index].name
+                );
+                let currentRoute =
+                  Navigation.getState().routes[Navigation.getState().index]
+                    .name;
+                if (currentRoute != "SendCrypto") {
+                  Navigation.navigate("SendCrypto");
                 }
               }}
             >
@@ -104,13 +112,15 @@ export const Nav = ({ flag, setFlag }) => {
               bg={ColorPallate.BlackLightBackgroundColor}
               paddingHorizontal={10}
               borderRadius={9}
-              onPress={()=>{
+              onPress={() => {
                 console.log(
-                Navigation.getState().routes[Navigation.getState().index].name
-                )
-                let currentRoute =  Navigation.getState().routes[Navigation.getState().index].name
-                if(currentRoute != "Dashboard"){
-                    Navigation.navigate("Dashboard")
+                  Navigation.getState().routes[Navigation.getState().index].name
+                );
+                let currentRoute =
+                  Navigation.getState().routes[Navigation.getState().index]
+                    .name;
+                if (currentRoute != "Dashboard") {
+                  Navigation.navigate("Dashboard");
                 }
               }}
             >
@@ -122,13 +132,15 @@ export const Nav = ({ flag, setFlag }) => {
               bg={ColorPallate.BlackLightBackgroundColor}
               paddingHorizontal={10}
               borderRadius={9}
-              onPress={()=>{
+              onPress={() => {
                 console.log(
-                Navigation.getState().routes[Navigation.getState().index].name
-                )
-                let currentRoute =  Navigation.getState().routes[Navigation.getState().index].name
-                if(currentRoute != "History"){
-                    Navigation.navigate("History")
+                  Navigation.getState().routes[Navigation.getState().index].name
+                );
+                let currentRoute =
+                  Navigation.getState().routes[Navigation.getState().index]
+                    .name;
+                if (currentRoute != "History") {
+                  Navigation.navigate("History");
                 }
               }}
             >
