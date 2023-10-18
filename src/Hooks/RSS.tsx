@@ -47,7 +47,7 @@ export const useFetchHistroy =  (address) => {
           const TempData = res.result.map((data, i) => { 
             return {
               from: data.from.lowercase,
-              to: data.to,
+              to: data.to.checksum,
               amount: data.value.ether,
             };
           });
