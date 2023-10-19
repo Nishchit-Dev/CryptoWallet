@@ -12,6 +12,8 @@ import { Dashboard } from "./src/screens/Dashboard/Dashboard";
 import { SendCypto } from "./src/screens/Send/SendCrypto";
 import { Scanner } from "./src/screens/Scanner/Scanner";
 import { History } from "./src/screens/History/History";
+import store from "./src/Store/store";
+import { Provider } from "react-redux";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,29 +29,40 @@ export default function App() {
     return null;
   }
   return (
+
+    // tamagui provider
     <TamaguiProvider config={tamaguiConfig}>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{ headerBackTitleVisible: false, headerShown: false }}
-        >
-          <Stack.Screen
-            name="Crypto Wallet"
-            component={LandingScreen}
 
-            // options={{ title: "Private Key" }}
-          ></Stack.Screen>
+      {/* react redux store */}
+      <Provider store={store}>
 
-          <Stack.Screen name="SettingUpWallet" component={SettingUpWallet} />
-          <Stack.Screen
-            name="CreateNewWallet"
-            component={CreateNewWalletScreen}
-          />
-          <Stack.Screen name="Dashboard" component={Dashboard} />
-          <Stack.Screen name="SendCrypto" component={SendCypto} />
-          <Stack.Screen name="Scanner" component={Scanner}/>
-          <Stack.Screen name="History" component={History}/>
-        </Stack.Navigator>
-      </NavigationContainer>
+        {/* Navigation */}
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerBackTitleVisible: false,
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen
+              name="Crypto Wallet"
+              component={LandingScreen}
+
+              // options={{ title: "Private Key" }}
+            ></Stack.Screen>
+
+            <Stack.Screen name="SettingUpWallet" component={SettingUpWallet} />
+            <Stack.Screen
+              name="CreateNewWallet"
+              component={CreateNewWalletScreen}
+            />
+            <Stack.Screen name="Dashboard" component={Dashboard} />
+            <Stack.Screen name="SendCrypto" component={SendCypto} />
+            <Stack.Screen name="Scanner" component={Scanner} />
+            <Stack.Screen name="History" component={History} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     </TamaguiProvider>
   );
 }
