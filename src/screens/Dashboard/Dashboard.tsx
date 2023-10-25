@@ -118,7 +118,7 @@ const AssetsView = ({ address, amount }) => {
       <XStack justifyContent="center" alignItems="center">
         <YStack alignItems="center" justifyContent="center">
           <XStack alignItems="center">
-            {!amount ? <Spinner size="large" /> : <></>}
+            {!amount ? <Spinner size="small" /> : <></>}
             <Text fontSize={32} fontFamily={"InterBold"} color={"white"}>
               {amount}
             </Text>

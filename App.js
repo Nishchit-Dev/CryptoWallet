@@ -1,6 +1,5 @@
 import { TamaguiProvider, Text } from "tamagui";
 import tamaguiConfig from "./tamagui.config";
-
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
@@ -17,7 +16,7 @@ import { Provider } from "react-redux";
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+export default function Main() {
   const [fontsLoaded, fontError] = useFonts({
     Inter: require("./assets/Poppins-Regular.ttf"),
     InterBold: require("./assets/Poppins-Bold.ttf"),

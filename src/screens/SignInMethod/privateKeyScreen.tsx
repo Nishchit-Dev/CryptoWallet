@@ -100,7 +100,7 @@ export const CreateNewWalletScreen = () => {
     const walletData = CreateWallet().then((res) => {
       let temp = res.wordlist;
       let length = temp.length;
-
+      
       setLeftPhrase(temp.slice(0, Math.ceil(length / 2)));
       setRightPhrase(temp.slice(length / 2, length));
 

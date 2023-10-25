@@ -38,7 +38,7 @@ export const useFetchHistroy =  (address) => {
     const run = async () => {
       const ChainID = 0x13881; // mumbai chain
       const WalletAddresss =
-        address || "0x744a09F5F8ceb8AB9135842fb2Cd167dA2F517aF";
+        address
       await Moralis.EvmApi.transaction
         .getWalletTransactions({
           address: WalletAddresss,
