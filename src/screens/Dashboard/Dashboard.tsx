@@ -9,6 +9,7 @@ import Scan from "../Assets/scan-ic.svg";
 import Matic from "../Assets/matic-ic.svg";
 import Copy from "../Assets/copy-ic.svg";
 
+import { useSelector, useDispatch } from "react-redux";
 import { useFetchBalance } from "../../Hooks/RSS";
 import { GetPrivateKey } from "../../Hooks/StorePrivateKey";
 import { useState, useEffect, useContext } from "react";
@@ -132,7 +133,7 @@ const AssetsView = ({ address, amount }) => {
           </XStack>
           <XStack>
             <Text fontSize={32} fontFamily={"InterBold"} color={"white"}>
-              ${(parseFloat(amount) * 0.54).toFixed(4).split(".")[0] || 0}.
+              ${amount ? (parseFloat(amount) * 0.54).toFixed(4).split(".")[0] || 0 : 0}.
             </Text>
             <Text
               fontSize={32}
@@ -221,12 +222,17 @@ export const Dashboard = ({ naviagte }) => {
   const [address, setAddress] = useState("");
   const navigation = useContext(NavigationContext);
   const [navFlag, setNav] = useState(false);
+  const dispatch = useDispatch()
   // useFetchHistroy(address);
-
+  const reduxAddress = useSelector((state) => {
+    return state.credentialReducer.address;
+  });
   useEffect(() => {
     GetPrivateKey().then((cred) => {
-      setAddress(cred.address);
-      useFetchBalance(cred.address, amount, setAmount);
+      console.log("address:",reduxAddress)
+      if (reduxAddress != null) {
+        useFetchBalance(reduxAddress, amount, setAmount);
+      }
     });
   }, []);
 
@@ -234,7 +240,7 @@ export const Dashboard = ({ naviagte }) => {
     <>
       {navFlag ? (
         <>
-          <Nav flag={navFlag} setFlag={setNav}/>
+          <Nav flag={navFlag} setFlag={setNav} />
         </>
       ) : (
         <></>
@@ -271,7 +277,7 @@ export const Dashboard = ({ naviagte }) => {
         backgroundColor={ColorPallate.BlackBackgroundColor}
         paddingVertical={35}
       >
-        <AssetsView address={address} amount={amount} />
+        <AssetsView address={reduxAddress} amount={amount} />
       </YStack>
       <YStack
         backgroundColor={ColorPallate.BlackBackgroundColor}

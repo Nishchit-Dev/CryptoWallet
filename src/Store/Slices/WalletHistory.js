@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit'
 
 export const WalletHistorySlice = createSlice({
     // name
-    name:"",
+    name:"walletHistory",
 
     // initale state
     initialState:{

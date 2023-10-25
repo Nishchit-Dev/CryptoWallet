@@ -13,6 +13,10 @@ import {
   DoesPrivateKeyExist,
   GetPrivateKey,
 } from "../../Hooks/StorePrivateKey";
+
+import { useDispatch,useSelector } from "react-redux";
+import { setAddress } from "../../Store/Slices/CredSlice";
+
 import { useContext, useEffect, useState } from "react";
 import { NavigationContext, useNavigation } from "@react-navigation/native";
 const screenHeight = Dimensions.get("window").height;
@@ -27,8 +31,25 @@ export const Arrow = () => {
   return <Image source={arrow} />;
 };
 
+const SetCred =()=>{
+
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+      GetPrivateKey().then((cred)=>{
+        dispatch(setAddress(cred.address))
+      })
+  },[])
+
+
+  return <>
+
+  </>
+}
+
 const LoadWallet = () => {
-  let nav_ = useContext(NavigationContext);
+
+  const nav_ = useContext(NavigationContext);
 
   useEffect(() => {
     setTimeout(() => {
@@ -99,6 +120,7 @@ export const LandingScreen = ({ navigation }) => {
 
   return (
     <View>
+      <SetCred/>
       <ImageBackground
         source={imga}
         style={{

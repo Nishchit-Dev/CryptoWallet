@@ -3,6 +3,7 @@ import { StatusBar } from "../Components/Status/Status";
 import { ColorPallate } from "../../customization/custom";
 import { shortAddress } from "../../utility/utility";
 import { useFetchHistroy } from "../../Hooks/RSS";
+import { useSelector } from "react-redux";
 
 const TnxComponent = ({ TnxList, address }) => {
   const SendOrReceiveStatus = (from, address) => {
@@ -65,8 +66,10 @@ const TnxComponent = ({ TnxList, address }) => {
 };
 
 export const History = () => {
-  const address = "0xcf9732cb9a340432c8f2cfdf95151b95a1598518";
-  const TnxList = useFetchHistroy("0xCF9732Cb9A340432c8f2cfdF95151B95a1598518");
+  const address = useSelector((state)=>{
+    return state.credentialReducer.address
+  })
+  const TnxList = useFetchHistroy(address);
   console.log(TnxList);
   return (
     <>
