@@ -84,7 +84,7 @@ const SwapButton = () => {
 const FunctionButtons = ({ address }) => {
   return (
     <XStack justifyContent="center" gap={30}>
-      <QrScanner address={address} />
+      <QrScanner />
       <SendButton address={address} />
       <SwapButton />
     </XStack>

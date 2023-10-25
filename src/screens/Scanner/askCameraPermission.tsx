@@ -1,14 +1,15 @@
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Text, XStack, YStack } from "tamagui";
 import { Dimensions } from "react-native";
 import { ColorPallate } from "../../customization/custom";
+import { NavigationContext } from "@react-navigation/native";
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
-export const AskForPermission = () => {
+export const AskForPermission = ({ flag, setFlag }) => {
+  const nav = useContext(NavigationContext);
   const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
   useEffect(() => {
     const getPremission = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -19,15 +20,22 @@ export const AskForPermission = () => {
     getPremission();
   }, []);
   const handleBarCodeScanned = (e) => {
-    console.log(e);
-    setScanned(true);
+    console.log("QR_address: ",e.data);
+    setFlag(true);
+
+    if (e.data != null || e.data != "") {
+      nav.navigate("SendCrypto", { QR_address: e.data });
+    }
   };
+
   return (
     <>
-      <BarCodeScanner
-        style={{  width: screenWidth, height: screenHeight-100 }}
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-      />
+      <XStack>
+        <BarCodeScanner
+          style={{ width: screenWidth, height: screenHeight - 100 }}
+          onBarCodeScanned={flag ? undefined : handleBarCodeScanned}
+        />
+      </XStack>
     </>
   );
 };

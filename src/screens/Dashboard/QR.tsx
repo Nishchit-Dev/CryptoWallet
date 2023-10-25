@@ -5,6 +5,7 @@ import Receive from "../Assets/receive-ic.svg";
 
 import QRCode from "react-native-qrcode-svg";
 import { CustomShortAddress, shortAddress } from "../../utility/utility";
+import { useSelector } from "react-redux";
 const ReceiveButton = () => {
   return (
     <>
@@ -20,8 +21,11 @@ const ReceiveButton = () => {
   );
 };
 
-export function QrScanner({ address }) {
+export function QrScanner() {
   const [open, setOpen] = useState(false);
+  const address = useSelector(state=>{
+    return state.credentialReducer.address
+  })
   return (
     <>
       <Dialog
@@ -100,7 +104,7 @@ export function QrScanner({ address }) {
                 padding={10}
                 gap={15}
               >
-                <QRCode value={address || "hello"} logoSize={150} size={250} />
+                <QRCode value={address } logoSize={150} size={250} />
                 <Text fontFamily={"InterRegular"} fontSize={24} color={"black"}>
                   {address ? CustomShortAddress(address, 8, 8) : ""}
                 </Text>

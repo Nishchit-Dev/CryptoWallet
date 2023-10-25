@@ -1,4 +1,4 @@
-import { XStack, Text, YStack, Input, Button, Spinner } from "tamagui";
+import { XStack, Text, YStack, Input, Button, Spinner, TextArea } from "tamagui";
 import Menu_ from "../Assets/menu-ic.svg";
 import Scan from "../Assets/scan-ic.svg";
 import { QrScanner } from "../Dashboard/QR";
@@ -6,7 +6,8 @@ import { ColorPallate } from "../../customization/custom";
 import Eth from "../Assets/eth-ic.svg";
 import { useContext, useState } from "react";
 import { useEstimateGas, useSendCrypto } from "../../Hooks/RSS";
-import { NavigationContext } from "@react-navigation/native";
+import { NavigationContext, useRoute } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 export const Menu = () => {
   return (
     <>
@@ -84,12 +85,13 @@ const AssetView = ({ amount, setAmount }) => {
   );
 };
 
-const UserInput = ({ amount, gas }) => {
+const UserInput = ({ amount, gas, address }) => {
+  const [ReceipeintAddress,setAddress] = useState(address)
   return (
     <>
       <XStack
         backgroundColor={ColorPallate.BlackBackgroundColor}
-        p={16}
+        paddingHorizontal={16}
         flexDirection="column"
         gap={12}
       >
@@ -98,11 +100,15 @@ const UserInput = ({ amount, gas }) => {
             <Text fontSize={17} fontFamily={"InterRegular"}>
               Receiver
             </Text>
-            <Input
+            
+            <TextArea
               borderRightColor={"$colorTransparent"}
               backgroundColor={ColorPallate.BlackLightBackgroundColor}
               placeholder="Recevier's Address"
-              value={""}
+              value={ReceipeintAddress}
+              onChangeText={setAddress}
+              paddingVertical={0}
+              height={address == "" ? 40:65}
             />
           </YStack>
         </XStack>
@@ -147,33 +153,45 @@ const UserInput = ({ amount, gas }) => {
     </>
   );
 };
-export const SendCypto = ({ route }) => {
+export const SendCypto = () => {
   const [amount, setAmount] = useState("0.0001");
   const [loading, setLoading] = useState(false);
   const gas = useEstimateGas();
-  const address = route.params.address
+  const QR_address = useRoute().params.QR_address;
+  console.log("QR-: ",QR_address)
+  const address = useSelector((state) => {
+    return state.credentialReducer.address;
+  });
+
   const [completed, setCompleted] = useState(false);
   const nav = useContext(NavigationContext);
+
   const handleSend = () => {
-    let tx = {
-      sender: address,
-      receipent: "0x744a09F5F8ceb8AB9135842fb2Cd167dA2F517aF",
-      amount: amount,
-    };
+    var tx = {};
+    console.log("Qr-address: ", QR_address);
+    if (QR_address != null) {
+      if (address != null) {
+        tx = {
+          sender: address,
+          receipent: QR_address,
+          amount: amount,
+        };
+      }
+    }
+
     setLoading(!loading);
-    console.log(tx)
-    useSendCrypto(address, tx).then((flag) => {
+    console.log(tx);
+    useSendCrypto(tx).then((flag) => {
       setLoading(!loading);
       setCompleted(!completed);
       setTimeout(() => {
-
         nav.goBack();
       }, 15 * 1000);
     });
   };
-  const handleCancel=()=>{
-    nav.goBack()
-  }
+  const handleCancel = () => {
+    nav.goBack();
+  };
   return (
     <>
       <XStack
@@ -187,7 +205,7 @@ export const SendCypto = ({ route }) => {
         <Text fontSize={20} fontStyle="InterRegular">
           Send
         </Text>
-        <QrScanner address={address || "0xEmpty"} />
+        <QrScanner />
       </XStack>
       <XStack
         flexDirection="column"
@@ -199,7 +217,11 @@ export const SendCypto = ({ route }) => {
         flexDirection="column"
         backgroundColor={ColorPallate.BlackBackgroundColor}
       >
-        <UserInput amount={amount} gas={gas.gasInEthers} />
+        <UserInput
+          amount={amount}
+          gas={gas.gasInEthers}
+          address={QR_address || "0xEmpty"}
+        />
       </XStack>
       <XStack
         backgroundColor={ColorPallate.BlackBackgroundColor}
@@ -234,7 +256,12 @@ export const SendCypto = ({ route }) => {
           {!loading ? (
             <>
               <YStack flex={1}>
-                <Button onPress={handleCancel} height={50} borderRadius={999} fontSize={20}>
+                <Button
+                  onPress={handleCancel}
+                  height={50}
+                  borderRadius={999}
+                  fontSize={20}
+                >
                   cancel
                 </Button>
               </YStack>

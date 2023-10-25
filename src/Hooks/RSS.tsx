@@ -75,7 +75,7 @@ export const useFetchHistroy =  (address) => {
   return data;
 };
 
-export const useSendCrypto = async (address, txData) => {
+export const useSendCrypto = async ( txData) => {
   const infuraUrl =
     "https://polygon-mumbai.infura.io/v3/6d41e19677f344b2a0a73aad3d9ed668";
 
