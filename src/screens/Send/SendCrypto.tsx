@@ -108,7 +108,7 @@ const UserInput = ({ amount, gas, address }) => {
               value={ReceipeintAddress}
               onChangeText={setAddress}
               paddingVertical={0}
-              height={address == "" ? 40:65}
+              height={address == "" || address == undefined || address == null ? 40:65}
             />
           </YStack>
         </XStack>
