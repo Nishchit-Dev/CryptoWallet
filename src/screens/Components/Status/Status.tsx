@@ -4,9 +4,10 @@ import { useContext, useState } from "react";
 import { ColorPallate } from "../../../customization/custom";
 import { NavigationContext } from "@react-navigation/native";
 import { Nav } from "../../NavBar/NavBar";
-export const StatusBar = ({ Title, Svg, navFlag, setNav, actionOnIcon }) => {
+export const StatusBar = ({ Title, Svg, actionOnIcon }) => {
   const navigation = useContext(NavigationContext);
   const [NavOpen,setNavOpen] = useState(false)
+
   return (
     <>
     {
@@ -16,6 +17,7 @@ export const StatusBar = ({ Title, Svg, navFlag, setNav, actionOnIcon }) => {
       <XStack
         paddingHorizontal={16}
         paddingTop={32}
+        paddingBottom={10}
         alignItems="center"
         justifyContent="space-between"
         backgroundColor={ColorPallate.BlackBackgroundColor}
@@ -30,7 +32,7 @@ export const StatusBar = ({ Title, Svg, navFlag, setNav, actionOnIcon }) => {
           <Menu />
         </XStack>
 
-        <Text fontSize={20} fontStyle="InterRegular" paddingRight={Svg!=null?0:45}>
+        <Text fontSize={20} fontFamily="InterRegular" paddingRight={Svg!=null?0:45}>
           {Title ? Title:"Enter Title"}
         </Text>
         <XStack

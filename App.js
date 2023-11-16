@@ -13,6 +13,7 @@ import { Scanner } from "./src/screens/Scanner/Scanner";
 import { History } from "./src/screens/History/History";
 import store from "./src/Store/store";
 import { Provider } from "react-redux";
+import SwapScreen from "./src/screens/Swap/SwapScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +56,7 @@ export default function Main() {
               name="CreateNewWallet"
               component={CreateNewWalletScreen}
             />
+            <Stack.Screen name="Swap" component={SwapScreen}/>
             <Stack.Screen name="Dashboard" component={Dashboard} />
             <Stack.Screen name="SendCrypto" component={SendCypto} />
             <Stack.Screen name="Scanner" component={Scanner} />

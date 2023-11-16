@@ -100,7 +100,7 @@ export const Nav = ({ flag, setFlag }) => {
                   Navigation.getState().routes[Navigation.getState().index]
                     .name;
                 if (currentRoute != "SendCrypto") {
-                  Navigation.navigate("SendCrypto");
+                  Navigation.navigate("SendCrypto",{address:""});
                 }
               }}
             >
@@ -119,8 +119,8 @@ export const Nav = ({ flag, setFlag }) => {
                 let currentRoute =
                   Navigation.getState().routes[Navigation.getState().index]
                     .name;
-                if (currentRoute != "Dashboard") {
-                  Navigation.navigate("Dashboard");
+                if (currentRoute != "Swap") {
+                  Navigation.navigate("Swap");
                 }
               }}
             >
