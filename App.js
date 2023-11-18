@@ -29,12 +29,9 @@ export default function Main() {
     return null;
   }
   return (
-
-    // tamagui provider
-    <TamaguiProvider config={tamaguiConfig}>
-
-      {/* react redux store */}
-      <Provider store={store}>
+    <Provider store={store}>
+      <TamaguiProvider config={tamaguiConfig}>
+        {/* react redux store */}
 
         {/* Navigation */}
         <NavigationContainer>
@@ -56,14 +53,14 @@ export default function Main() {
               name="CreateNewWallet"
               component={CreateNewWalletScreen}
             />
-            <Stack.Screen name="Swap" component={SwapScreen}/>
+            <Stack.Screen name="Swap" component={SwapScreen} />
             <Stack.Screen name="Dashboard" component={Dashboard} />
             <Stack.Screen name="SendCrypto" component={SendCypto} />
             <Stack.Screen name="Scanner" component={Scanner} />
             <Stack.Screen name="History" component={History} />
           </Stack.Navigator>
         </NavigationContainer>
-      </Provider>
-    </TamaguiProvider>
+      </TamaguiProvider>
+    </Provider>
   );
 }

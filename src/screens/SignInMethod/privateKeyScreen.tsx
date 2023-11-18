@@ -10,7 +10,7 @@ import {
   Image,
 } from "tamagui";
 import { ColorPallate } from "../../customization/custom";
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { CreateWallet } from "../../utility/CreateWallet";
 import { StorePrivateKey } from "../../Hooks/StorePrivateKey";
 import { NavigationContext } from "@react-navigation/native";
@@ -33,10 +33,10 @@ const ListOfPhrase = ({ List, length }) => {
                     borderRadius={999}
                     paddingHorizontal={23}
                     paddingVertical={8}
-                    width={145}
+                    width={135}
                     maxHeight={55}
                   >
-                    <Text fontSize={18} fontFamily={"InterRegular"}>
+                    <Text fontSize={16} fontFamily={"InterRegular"}>
                       {" "}
                       {word}
                     </Text>
@@ -61,8 +61,6 @@ export const Menu = () => {
 };
 
 const SavePassword = ({ SavePswd }) => {
-  
-  
   return (
     <XStack>
       <Button
@@ -87,20 +85,20 @@ export const CreateNewWalletScreen = () => {
   const [phrase, setPhase] = useState([]);
   const [PhraseListLeft, setLeftPhrase] = useState([]);
   const [PhraseListRight, setRightPhrase] = useState([]);
-  const ContextNav = useContext(NavigationContext)
- 
+  const ContextNav = useContext(NavigationContext);
+
   const onSavePassword = () => {
     if (cred != null) {
       console.log("cred");
       StorePrivateKey(cred);
-      ContextNav.navigate("Dashboard")
+      ContextNav.navigate("Dashboard");
     }
   };
   useEffect(() => {
     const walletData = CreateWallet().then((res) => {
       let temp = res.wordlist;
       let length = temp.length;
-      
+
       setLeftPhrase(temp.slice(0, Math.ceil(length / 2)));
       setRightPhrase(temp.slice(length / 2, length));
 
@@ -120,6 +118,7 @@ export const CreateNewWalletScreen = () => {
       >
         <Menu />
       </XStack>
+
       <YStack
         flex={1}
         p="$3"
@@ -127,18 +126,21 @@ export const CreateNewWalletScreen = () => {
         backgroundColor={ColorPallate.BlackBackgroundColor}
         padding={16}
       >
-        <YStack alignItems="center" justifyContent="flex-start">
-          <XStack>
-            <Text fontFamily={"InterBold"} fontSize={32} textAlign="center">
-              Create a New Wallet
-            </Text>
-          </XStack>
+        <ScrollView>
+          <YStack alignItems="center" justifyContent="flex-start">
+            <XStack>
+              <Text fontFamily={"InterBold"} fontSize={32} textAlign="center">
+                Create a New Wallet
+              </Text>
+            </XStack>
 
-          <XStack marginBottom={72}>
-            <Text fontFamily={"Inter"} fontSize={20} textAlign="left">
-              Lets generate fresh secret key or phrase for new wallet.
-            </Text>
-          </XStack>
+            <XStack marginBottom={72}>
+              <Text fontFamily={"Inter"} fontSize={20} textAlign="left">
+                Lets generate fresh secret key or phrase for new wallet.
+              </Text>
+            </XStack>
+          </YStack>
+
           <XStack justifyContent="space-between" gap={10}>
             {PhraseListRight.length > 0 && PhraseListLeft.length > 0 ? (
               <>
@@ -152,18 +154,18 @@ export const CreateNewWalletScreen = () => {
               <></>
             )}
           </XStack>
-        </YStack>
-        <YStack flex={1} justifyContent="flex-end">
-          {cred != null ? (
-            <>
-              <SavePassword SavePswd={onSavePassword} />
-            </>
-          ) : (
-            <>
-              <Spinner size="large" color={ColorPallate.BrandColor} />
-            </>
-          )}
-        </YStack>
+          <YStack flex={1} justifyContent="flex-end" marginTop={10}>
+            {cred != null ? (
+              <>
+                <SavePassword SavePswd={onSavePassword} />
+              </>
+            ) : (
+              <>
+                <Spinner size="large" color={ColorPallate.BrandColor} />
+              </>
+            )}
+          </YStack>
+        </ScrollView>
       </YStack>
     </>
   );

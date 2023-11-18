@@ -9,20 +9,16 @@ import {
   XStack,
   YStack,
 } from "tamagui";
-import { useState } from "react";
+import { useState, useContext, createContext } from "react";
 import { Constant } from "./Constant";
+import Contansts from "../../../Hooks/Swap/constant/TokensConstant.json";
+
 import { ColorPallate } from "../../../customization/custom";
-export const TokenSelector = () => {
-  const [open, setOpen] = useState(false);
+import { useDispatch } from "react-redux";
 
-  return (
-    <>
-      {/* <DialogComponent open={open} setOpen={setOpen}></DialogComponent> */}
-    </>
-  );
-};
-
-export const DialogComponent = ({ open, setOpen }) => {
+let Context;
+export const DialogComponent = ({ open, setOpen, setToken }) => {
+  Context = createContext(setOpen);
   return (
     <Dialog modal open={open}>
       <Dialog.Trigger asChild>
@@ -76,8 +72,9 @@ export const DialogComponent = ({ open, setOpen }) => {
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           // gap="$4"
         >
-          <WrappedComponent />
-
+          <Context.Provider value={setOpen}>
+            <WrappedComponent setToken={setToken} />
+          </Context.Provider>
           {/* <Dialog.Close /> */}
         </Dialog.Content>
       </Dialog.Portal>
@@ -107,18 +104,47 @@ const SearchBar = () => {
   );
 };
 
-const Token = ({ data, i }) => {
-  console.log(data);
+const Token = ({ data, i, setToken }) => {
+  //   console.log(data);
+  const closeDialog = useContext(Context);
+  const dispatch = useDispatch();
   return (
     <>
-      <XStack gap={20} flex={1} key={i} alignItems="center" p={8}>
-        <Image w={50} h={50} source={{ uri: data.logoURI }} />
+      <XStack
+        gap={20}
+        flex={1}
+        key={i + 1}
+        alignItems="center"
+        p={8}
+        onPress={() => {
+          let tokenInfo = {
+            address: data.address,
+            decimals: data.decimals,
+            name: data.name,
+            symbol: data.symbol,
+            logoURI: data.logoURI,
+          };
+          dispatch(setToken(tokenInfo));
+          console.log(data);
+          closeDialog(false);
+        }}
+      >
+        <Image
+          w={40}
+          h={40}
+          source={{ uri: data.logoURI }}
+          borderRadius={999}
+        />
         <XStack>
-          <YStack  alignItems="baseline">
+          <YStack alignItems="baseline">
             <Text fontSize={18} fontFamily={"InterRegular"}>
               {data.name}
             </Text>
-            <Text fontSize={16} color={ColorPallate.FontLightColor} fontFamily={"InterRegular"}>
+            <Text
+              fontSize={16}
+              color={ColorPallate.FontLightColor}
+              fontFamily={"InterRegular"}
+            >
               {data.symbol}
             </Text>
           </YStack>
@@ -128,7 +154,7 @@ const Token = ({ data, i }) => {
   );
 };
 
-export const WrappedComponent = () => {
+export const WrappedComponent = ({ setToken }) => {
   return (
     <>
       <XStack flexDirection="column">
@@ -144,9 +170,9 @@ export const WrappedComponent = () => {
           justifyContent="center"
           alignItems="baseline"
         >
-          <ScrollView >
+          <ScrollView width="100%" showsVerticalScrollIndicator={false}>
             {Constant.token.map((data, i) => {
-              return <Token data={data} i={i + 1} />;
+              return <Token data={data} i={i + 1} setToken={setToken} />;
             })}
           </ScrollView>
         </YStack>

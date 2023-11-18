@@ -3,11 +3,17 @@ import { ColorPallate } from "../../../customization/custom";
 import ArrowDown from "../../Assets/arrow-down-ic.svg";
 import { useState } from "react";
 import { DialogComponent } from "./TokenSelector";
+import { useSelector } from "react-redux";
 const DefaultSrc =
   "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png";
 
-export const TokenSelect = ({ TokenSrc }) => {
+export const TokenSelect = ({ setToken, flag }) => {
   const [open, setOpen] = useState(false);
+  const TokenInfo = useSelector((state) => {
+    return flag == "from"
+      ? state.swapTokens.TokenFrom
+      : state.swapTokens.TokenTo;
+  });
   return (
     <XStack paddingTop={10}>
       <YStack
@@ -16,6 +22,9 @@ export const TokenSelect = ({ TokenSrc }) => {
         justifyContent="center"
         alignItems="center"
         flex={1}
+        onPress={() => {
+          setOpen(!open);
+        }}
         paddingVertical={25}
       >
         <XStack
@@ -23,19 +32,22 @@ export const TokenSelect = ({ TokenSrc }) => {
           justifyContent="center"
           alignItems="center"
           gap={10}
-          padding={5}
-          paddingHorizontal={10}
+          padding={7}
           bg={"#3a3a3a"}
           borderRadius={999}
-          onPress={() => {
-            setOpen(!open);
-          }}
         >
-          <XStack>
-            <Image w={35} h={35} source={{ uri: DefaultSrc }} />
+          <XStack paddingRight={2}>
+            <Image
+              w={35}
+              h={35}
+              source={{
+                uri: TokenInfo.logoURI ? TokenInfo.logoURI : DefaultSrc,
+              }}
+              borderRadius={999}
+            />
           </XStack>
           <XStack>
-            <Text fontFamily={"InterRegular"}>name</Text>
+            <Text fontFamily={"InterRegular"}>{TokenInfo.symbol}</Text>
           </XStack>
           <XStack>
             <ArrowDown width={25} height={25} />
@@ -43,18 +55,47 @@ export const TokenSelect = ({ TokenSrc }) => {
         </XStack>
 
         <Text fontFamily={"InterRegular"} color={ColorPallate.FontLightColor}>
-          Swap From
+          Swap {flag}
         </Text>
         <YStack>
-          {/* <Text fontFamily={"InterRegular"}>Amount</Text> */}
-          {/* <YStack>
+          {/* <Text fontFamily={"InterRegular"}>Amount</Text>
+           */}
+           <Amount amount={12.892} data={TokenInfo}/>
+          <YStack>
             <Text fontFamily={"InterRegular"}>max</Text>
-          </YStack> */}
+          </YStack>
         </YStack>
 
         <Text fontFamily={"InterRegular"}>$23.244</Text>
-        <DialogComponent open={open} setOpen={setOpen}></DialogComponent>
+        <DialogComponent
+          open={open}
+          setOpen={setOpen}
+          setToken={setToken}
+        ></DialogComponent>
       </YStack>
     </XStack>
+  );
+};
+
+const Amount = ({ amount, data }) => {
+  return (
+    <>
+      <XStack justifyContent="center" alignItems="center">
+        <YStack alignItems="center" justifyContent="center">
+          <XStack alignItems="center">
+            <Text fontSize={32} fontFamily={"InterBold"} color={"white"}>
+              {amount}
+            </Text>
+            <Text
+              fontSize={32}
+              fontFamily={"InterBold"}
+              color={ColorPallate.FontLightColor}
+            >
+              {" " + data.symbol}
+            </Text>
+          </XStack>
+        </YStack>
+      </XStack>
+    </>
   );
 };

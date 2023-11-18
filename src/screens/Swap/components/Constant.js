@@ -1,70 +1,105 @@
 export const Constant = {
   token: [
     {
-      name: "Wrapped Ether",
-      address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-      symbol: "WETH",
+      name: "Tether USD",
+      address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      symbol: "USDT",
+      decimals: 6,
+      chainId: 1,
+      logoURI:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png",
+      extensions: {
+        bridgeInfo: {
+          10: {
+            tokenAddress: "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
+          },
+          56: {
+            tokenAddress: "0x55d398326f99059fF775485246999027B3197955",
+          },
+          137: {
+            tokenAddress: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+          },
+          42161: {
+            tokenAddress: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+          },
+          43114: {
+            tokenAddress: "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7",
+          },
+        },
+      },
+    },
+    {
+      name: "Dai Stablecoin",
+      address: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      symbol: "DAI",
       decimals: 18,
       chainId: 1,
+      logoURI:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+      extensions: {
+        bridgeInfo: {
+          10: {
+            tokenAddress: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+          },
+          56: {
+            tokenAddress: "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3",
+          },
+          137: {
+            tokenAddress: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+          },
+          42161: {
+            tokenAddress: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+          },
+          43114: {
+            tokenAddress: "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70",
+          },
+        },
+      },
+    },
+    {
+      name: "USDCoin",
+      address: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+      symbol: "USDC",
+      decimals: 6,
+      chainId: 10,
+      logoURI:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+      extensions: {
+        bridgeInfo: {
+          1: {
+            tokenAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          },
+        },
+      },
+    },
+    {
+      name: "Wrapped BTC",
+      address: "0x68f180fcCe6836688e9084f035309E29Bf0A2095",
+      symbol: "WBTC",
+      decimals: 8,
+      chainId: 10,
+      logoURI:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png",
+      extensions: {
+        bridgeInfo: {
+          1: {
+            tokenAddress: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+          },
+        },
+      },
+    },
+    {
+      name: "Wrapped Ether",
+      address: "0x4200000000000000000000000000000000000006",
+      symbol: "WETH",
+      decimals: 18,
+      chainId: 10,
       logoURI:
         "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
       extensions: {
         bridgeInfo: {
-          10: {
-            tokenAddress: "0x4200000000000000000000000000000000000006",
-          },
-          56: {
-            tokenAddress: "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
-          },
-          137: {
-            tokenAddress: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
-          },
-          42161: {
-            tokenAddress: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
-          },
-          42220: {
-            tokenAddress: "0x2DEf4285787d58a2f811AF24755A8150622f4361",
-          },
-          43114: {
-            tokenAddress: "0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB",
-          },
-        },
-      },
-    },
-    {
-      chainId: 56,
-      address: "0xCC42724C6683B7E57334c4E856f4c9965ED682bD",
-      name: "Polygon",
-      symbol: "MATIC",
-      decimals: 18,
-      logoURI:
-        "https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png?1624446912",
-      extensions: {
-        bridgeInfo: {
           1: {
-            tokenAddress: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
-          },
-        },
-      },
-    },
-    {
-      chainId: 1,
-      address: "0xB6eD7644C69416d67B522e20bC294A9a9B405B31",
-      name: "0xBitcoin",
-      symbol: "0XBTC",
-      decimals: 8,
-      logoURI:
-        "https://assets.coingecko.com/coins/images/4454/large/0xbtc.png?1561603765",
-      extensions: {
-        bridgeInfo: {
-          10: {
-            tokenAddress: "0xe0BB0D3DE8c10976511e5030cA403dBf4c25165B",
-          },
-          137: {
-            tokenAddress: "0x71B821aa52a49F32EEd535fCA6Eb5aa130085978",
-          },
-          42161: {
-            tokenAddress: "0x7cb16cb78ea464aD35c8a50ABF95dff3c9e09d5d",
+            tokenAddress: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
           },
         },
       },
