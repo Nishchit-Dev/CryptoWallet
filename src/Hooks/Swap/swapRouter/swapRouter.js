@@ -15,12 +15,12 @@ const SwapTx = async (
   sqrtPriceX96
 ) => {
   let tx = {
-    tokenIn: await immutables.token1(),
-    tokenOut: await immutables.token0(),
+    tokenIn: await immutables.token0(),
+    tokenOut: await immutables.token1(),
     fee: await immutables.fee(),
     recipient: address,
     deadline: Math.floor(Date.now() / 1000 + 60 * 10),
-    amountIn: ethers.utils.parseUnits(_amountIn.toString(), 18),
+    amountIn: ethers.parseUnits(_amountIn.toString(), 18),
     amountOutMinimum: 0,
     sqrtPriceLimitX96: 0,
   };
@@ -28,7 +28,7 @@ const SwapTx = async (
 
   try {
     const _tx = await swapRouterContract.connect(wallet).exactInputSingle(tx, {
-      gasLimit: ethers.utils.hexlify(600000),
+      gasLimit:600000,
       //   // value: ethers.utils.parseEther(_amountIn.toString(), 18),
     });
     const recepit = await _tx.wait();
@@ -49,7 +49,7 @@ const approveCall = async (token0Address, approvalAmount, wallet, provider) => {
     .connect(wallet)
     .approve(
       swapRouterAddress,
-      ethers.utils.parseUnits(approvalAmount.toString(), 18)
+      ethers.parseUnits(approvalAmount.toString(), 18)
     );
 
   const recipt = await approvalResponse.wait();

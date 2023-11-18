@@ -8,10 +8,13 @@ const forked = {
   MainNet:"http://127.0.0.1:8545/"
 }
 
+
 exports.providers = () => {
   return {
-    sepolia: new ethers.providers.JsonRpcProvider(infura.sepolia),
-    goerli: new ethers.providers.JsonRpcProvider(infura.goerli),
-    forkedMainet: new ethers.providers.JsonRpcProvider(forked.MainNet)
+    
+    sepolia: new ethers.JsonRpcProvider(infura.sepolia),
+    goerli: new ethers.JsonRpcProvider(infura.goerli),
+    forkedMainet: new ethers.JsonRpcProvider(forked.MainNet)
+    
   };
 };

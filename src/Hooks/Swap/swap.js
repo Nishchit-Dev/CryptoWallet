@@ -46,10 +46,10 @@ const Swap = async () => {
   );
   await checkBalance(
     provider,
-    tokens().WBTCToken.address,
+    tokens().USDTToken.address,
     WalletAddress,
-    tokens().WBTCToken.symbol,
-    tokens().WBTCToken.decimals
+    tokens().USDTToken.symbol,
+    tokens().USDTToken.decimals
   );
 
   const poolAddress = await getPoolAddress(provider);
@@ -89,17 +89,17 @@ const Swap = async () => {
   );
   await checkBalance(
     provider,
-    tokens().WBTCToken.address,
+    tokens().USDTToken.address,
     WalletAddress,
-    tokens().WBTCToken.symbol,
-    tokens().WBTCToken.decimals
+    tokens().USDTToken.symbol,
+    tokens().USDTToken.decimals
   );
   await checkBalance(
     provider,
-    tokens().WBTCToken.address,
+    tokens().USDTToken.address,
     "0x6Ab3bba2F41e7eAA262fa5A1A9b3932fA161526F",
-    tokens().WBTCToken.symbol,
-    tokens().WBTCToken.decimals
+    tokens().USDTToken.symbol,
+    tokens().USDTToken.decimals
   );
 };
 
