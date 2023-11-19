@@ -4,12 +4,27 @@ import { ColorPallate } from "../../customization/custom";
 import { TotalAsset } from "./components/TotalAsset";
 import { TokenSelect } from "./components/TokenSelect";
 import { WrappedComponent } from "./components/TokenSelector";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { setTokenFrom, setTokenTo } from "../../Store/Slices/SwapSlice";
+import { ethers } from "ethers";
+import { Swap } from "../../Hooks/Swap/swap.js";
+import { useSelector } from "react-redux";
+import { GetPrivateKey } from "../../Hooks/StorePrivateKey";
 const SwapScreen = () => {
   const open = () => {
     console.log("open");
   };
+
+  const TokenFrom = useSelector((state) => {
+    return state.swapTokens.TokenFrom;
+  });
+  const TokenTo = useSelector((state) => {
+    return state.swapTokens.TokenTo;
+  });
+  const wallet = GetPrivateKey().then((res) => {
+    return res;
+  });
+  const Amount = 0.0001;
 
   return (
     <>
@@ -35,7 +50,27 @@ const SwapScreen = () => {
               backgroundColor={ColorPallate.BrandColor}
               height={50}
               onPress={() => {
-                console.log("Swap");
+                if (
+                  TokenFrom != undefined &&
+                  TokenTo != undefined &&
+                  Amount > -1
+                ) {
+                  // extracting phrase from wallet Async fun
+
+                  console.log(TokenFrom);
+                  console.log(TokenTo);
+                  console.log(Amount);
+
+                  wallet.then((res) => {
+                    console.log(res.phrase);
+                    Swap(
+                      Amount,
+                      { TokenFrom, TokenTo },
+                      res.phrase,
+                      res.address
+                    );
+                  });
+                }
               }}
               borderRadius={999}
               fontFamily={"InterRegular"}

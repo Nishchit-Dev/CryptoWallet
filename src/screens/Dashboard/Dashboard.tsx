@@ -1,4 +1,4 @@
-import { Text, XStack, YStack, Spinner } from "tamagui";
+import { Text, XStack, YStack, Spinner, Image } from "tamagui";
 import { ColorPallate } from "../../customization/custom";
 import Eth from "../Assets/eth-ic.svg";
 import Menu_ from "../Assets/menu-ic.svg";
@@ -17,6 +17,9 @@ import { shortAddress } from "../../utility/utility";
 import { QrScanner } from "./QR";
 import { NavigationContext } from "@react-navigation/native";
 import { Nav } from "../NavBar/NavBar";
+import { checkBalance } from "../../Hooks/Swap/balance/checkBalanace";
+import { providers } from "../../Hooks/Swap/provider/provider";
+import { Constant } from "../Swap/components/Constant";
 export const Menu = () => {
   return (
     <>
@@ -133,14 +136,18 @@ const AssetsView = ({ address, amount }) => {
           </XStack>
           <XStack>
             <Text fontSize={32} fontFamily={"InterBold"} color={"white"}>
-              ${amount ? (parseFloat(amount) * 0.54).toFixed(4).split(".")[0] || 0 : 0}.
+              $
+              {amount
+                ? (parseFloat(amount) * 0.84).toFixed(4).split(".")[0] || 0
+                : 0}
+              .
             </Text>
             <Text
               fontSize={32}
               fontFamily={"InterBold"}
               color={ColorPallate.NeutralColor}
             >
-              {(parseFloat(amount) * 0.54).toFixed(3).split(".")[1] || 0}
+              {(parseFloat(amount) * 0.84).toFixed(2).split(".")[1] || 0}
             </Text>
           </XStack>
         </YStack>
@@ -149,7 +156,8 @@ const AssetsView = ({ address, amount }) => {
   );
 };
 
-const ListOfTokens = ({ List }) => {
+const ListOfTokens = ({ wallet }) => {
+  const List = Constant.token;
   return (
     <>
       <XStack marginBottom={10}>
@@ -159,21 +167,14 @@ const ListOfTokens = ({ List }) => {
       </XStack>
       <YStack gap={17}>
         {List.map((ele, i) => {
-          return (
-            <TokenComponent
-              source={Eth}
-              TokenName={ele.name || null}
-              amount={ele.amount || null}
-              key={i}
-            />
-          );
+          return <TokenComponent tokenInfo={ele} wallet={wallet} key={i} />;
         })}
-        <TokenComponent
+        {/* <TokenComponent
           source={Matic}
           TokenName={"Matic"}
           amount={null}
           key={9999}
-        />
+        /> */}
       </YStack>
     </>
   );
@@ -182,7 +183,25 @@ const ListOfTokens = ({ List }) => {
 const Logo = ({ Svg }) => {
   return <Svg width={36} height={36} />;
 };
-export const TokenComponent = ({ source, TokenName, amount }) => {
+export const TokenComponent = ({ tokenInfo, wallet }) => {
+  const [amount, setAmount] = useState("0");
+  useEffect(() => {
+    setInterval(() => {
+      (async () => {
+        if(tokenInfo != null){
+          let _amount = await checkBalance(
+            providers().goerli,
+            tokenInfo.address,
+            wallet,
+            tokenInfo.symbol,
+            tokenInfo.decimals
+          );
+          setAmount(_amount);
+        }
+
+      })();
+    }, 15 * 1000);
+  }, []);
   return (
     <>
       <XStack>
@@ -196,16 +215,21 @@ export const TokenComponent = ({ source, TokenName, amount }) => {
           borderRadius={999}
         >
           <XStack>
-            <Logo Svg={source} />
-            <XStack paddingHorizontal={16}>
-              <Text fontSize={20} fontFamily={"InterRegular"}>
-                {TokenName || "Eth"}
+            <Image
+              w={40}
+              h={40}
+              source={{ uri: tokenInfo.logoURI }}
+              borderRadius={999}
+            />
+            <XStack paddingHorizontal={16} alignItems="center">
+              <Text fontSize={18} fontFamily={"InterRegular"}>
+                {tokenInfo.name || "Eth"}
               </Text>
             </XStack>
           </XStack>
           <XStack paddingHorizontal={16}>
-            <Text fontSize={20} fontFamily={"InterRegular"}>
-              {amount || 12.21}
+            <Text fontSize={18} fontFamily={"InterRegular"}>
+              {parseFloat(amount).toFixed(5) || 12.21}
             </Text>
           </XStack>
         </XStack>
@@ -222,14 +246,14 @@ export const Dashboard = ({ naviagte }) => {
   const [address, setAddress] = useState("");
   const navigation = useContext(NavigationContext);
   const [navFlag, setNav] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // useFetchHistroy(address);
   const reduxAddress = useSelector((state) => {
     return state.credentialReducer.address;
   });
   useEffect(() => {
     GetPrivateKey().then((cred) => {
-      console.log("address:",reduxAddress)
+      console.log("address:", reduxAddress);
       if (reduxAddress != null) {
         useFetchBalance(reduxAddress, amount, setAmount);
       }
@@ -291,7 +315,7 @@ export const Dashboard = ({ naviagte }) => {
         backgroundColor={ColorPallate.BlackBackgroundColor}
       >
         <Divider />
-        <ListOfTokens List={[{ name: "Eth", amount: amount }]} />
+        <ListOfTokens wallet={reduxAddress} />
       </YStack>
     </>
   );

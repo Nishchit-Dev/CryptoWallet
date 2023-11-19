@@ -14,10 +14,11 @@ exports.WrapTokens = async (
     provider
   );
   const tnx = await WrappedTokenContract.connect(WalletConnected).deposit({
-    value: ethers.utils.parseUnits(amount.toString(), "18"),
+    value: ethers.parseUnits(amount.toString(), 18),
   });
 
   const recipt = await tnx.wait()
 
+  return recipt
 
 };

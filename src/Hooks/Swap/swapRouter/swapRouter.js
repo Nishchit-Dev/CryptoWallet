@@ -1,7 +1,6 @@
 const ethers = require("ethers");
 const { tokens } = require("../constant/tokens/tokens");
 const { Abi } = require("../constant/abi/abi");
-const { default: BigNumber } = require("bignumber.js");
 
 // swaprouter address deployment address of Uniswap
 const swapRouterAddress = "0xE592427A0AEce92De3Edee1F18E0157C05861564";
@@ -12,23 +11,26 @@ const SwapTx = async (
   _amountIn,
   swapRouterContract,
   wallet,
-  sqrtPriceX96
+  sqrtPriceX96,
+  TokenInfo
 ) => {
   let tx = {
-    tokenIn: await immutables.token1(),
-    tokenOut: await immutables.token0(),
+    // swap this two
+    tokenIn: TokenInfo.TokenFrom.address,
+    tokenOut: TokenInfo.TokenTo.address,
+
     fee: await immutables.fee(),
     recipient: address,
     deadline: Math.floor(Date.now() / 1000 + 60 * 10),
-    amountIn: ethers.utils.parseUnits(_amountIn.toString(), 18),
+    amountIn: ethers.parseUnits(_amountIn.toString(), 18),
     amountOutMinimum: 0,
     sqrtPriceLimitX96: 0,
   };
-  console.log("Tx -> ", tx);
+  console.log("new Tx -> ", tx);
 
   try {
     const _tx = await swapRouterContract.connect(wallet).exactInputSingle(tx, {
-      gasLimit: ethers.utils.hexlify(600000),
+      gasLimit: ethers.hexlify("0x500000"),
       //   // value: ethers.utils.parseEther(_amountIn.toString(), 18),
     });
     const recepit = await _tx.wait();
@@ -49,7 +51,7 @@ const approveCall = async (token0Address, approvalAmount, wallet, provider) => {
     .connect(wallet)
     .approve(
       swapRouterAddress,
-      ethers.utils.parseUnits(approvalAmount.toString(), 18)
+      ethers.parseUnits(approvalAmount.toString(), 18)
     );
 
   const recipt = await approvalResponse.wait();
@@ -63,16 +65,18 @@ const Swap_Tnx = async (
   wallet,
   immutables,
   address,
-  sqrtPriceX96
+  sqrtPriceX96,
+  TokenInfo
 ) => {
   const swapRouterContract = new ethers.Contract(
     swapRouterAddress,
     Abi.SwapRouterAbi,
     provider
   );
-
+  console.log(TokenInfo.TokenFrom);
   await approveCall(
-    tokens().wrappedEtherToken.address,
+    // swaping this also
+    TokenInfo.TokenFrom.address,
     amount,
     wallet,
     provider
@@ -84,7 +88,8 @@ const Swap_Tnx = async (
     amount,
     swapRouterContract,
     wallet,
-    sqrtPriceX96
+    sqrtPriceX96,
+    TokenInfo
   );
 };
 
