@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 const DefaultSrc =
   "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png";
 
-export const TokenSelect = ({ setToken, flag, setAmount,amount }) => {
+export const TokenSelect = ({ setToken, flag, setAmount, amount }) => {
   const [open, setOpen] = useState(false);
   const TokenInfo = useSelector((state) => {
     return flag == "from"
@@ -25,7 +25,7 @@ export const TokenSelect = ({ setToken, flag, setAmount,amount }) => {
         onPress={() => {
           setOpen(!open);
         }}
-        paddingVertical={25}
+        paddingVertical={25}  
       >
         <XStack
           maxWidth={152}
@@ -61,7 +61,6 @@ export const TokenSelect = ({ setToken, flag, setAmount,amount }) => {
           {/* <Text fontFamily={"InterRegular"}>Amount</Text>
            */}
           <Amount setAmount={setAmount} amount={amount} data={TokenInfo} />
-         
         </YStack>
 
         <Text fontFamily={"InterRegular"}>$23.244</Text>
@@ -80,15 +79,15 @@ const Amount = ({ amount, setAmount, data }) => {
     <>
       <XStack justifyContent="center" alignItems="center">
         <YStack alignItems="center" justifyContent="center">
-          <XStack alignItems="center">
+          <XStack alignItems={"center"}>
             <Input
+              marginTop={8}
               value={amount}
               onChangeText={setAmount}
               backgroundColor={"$colorTransparent"}
               defaultValue="0.01"
               keyboardType="numeric"
               caretHidden
-              textAlignVertical="bottom"
               fontSize={32}
               borderColor="$colorTransparent"
               focusStyle={{
@@ -104,7 +103,7 @@ const Amount = ({ amount, setAmount, data }) => {
               fontFamily={"InterBold"}
               color={ColorPallate.FontLightColor}
             >
-              {" " + data.symbol}
+              {data.symbol}
             </Text>
           </XStack>
         </YStack>

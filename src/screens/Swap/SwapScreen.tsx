@@ -1,4 +1,4 @@
-import { Text, XStack, Button, YStack } from "tamagui";
+import { Text, XStack, Button, YStack, Spinner } from "tamagui";
 import { StatusBar } from "../Components/Status/Status";
 import { ColorPallate } from "../../customization/custom";
 import { TotalAsset } from "./components/TotalAsset";
@@ -10,8 +10,14 @@ import { ethers } from "ethers";
 import { Swap } from "../../Hooks/Swap/swap.js";
 import { useSelector } from "react-redux";
 import { GetPrivateKey } from "../../Hooks/StorePrivateKey";
+import { useContext } from "react";
+import { NavigationContext } from "@react-navigation/native";
 const SwapScreen = () => {
-  const [Amount,setAmount] = useState("0.01");
+  const navigation = useContext(NavigationContext);
+
+  const [tnxStatus, setTnxStatus] = useState(null);
+  const [loading, setLoading] = useState(null);
+  const [Amount, setAmount] = useState("0.01");
   const open = () => {
     console.log("open");
   };
@@ -39,47 +45,79 @@ const SwapScreen = () => {
       >
         <TotalAsset />
 
-        <TokenSelect setToken={setTokenFrom} flag={"from"} setAmount={setAmount} Amount={Amount}/>
-        <TokenSelect setToken={setTokenTo} flag={"to"} setAmount={setAmount}  Amount={Amount}/>
+        <TokenSelect
+          setToken={setTokenFrom}
+          flag={"from"}
+          setAmount={setAmount}
+          Amount={Amount}
+        />
+        <TokenSelect
+          setToken={setTokenTo}
+          flag={"to"}
+          setAmount={setAmount}
+          Amount={Amount}
+        />
 
         {/* <WrappedComponent/> */}
         <XStack marginVertical={10}>
           <YStack flex={1}>
             <Button
               // disabled={completed ? true : false}
-              backgroundColor={ColorPallate.BrandColor}
+              backgroundColor={
+                tnxStatus == null
+                  ? ColorPallate.BrandColor
+                  : tnxStatus == false
+                  ? ColorPallate.Failure
+                  : ColorPallate.Success
+              }
               height={50}
               onPress={() => {
                 if (
                   TokenFrom != undefined &&
                   TokenTo != undefined &&
-                  Amount > -1
+                  parseFloat(Amount) > -1
                 ) {
                   // extracting phrase from wallet Async fun
-
-                  console.log(TokenFrom);
-                  console.log(TokenTo);
-                  console.log(Amount);
-
+                  setLoading(true);
                   wallet.then((res) => {
                     console.log(res.phrase);
-                    Swap(
-                      Amount,
-                      { TokenFrom, TokenTo },
-                      res.phrase,
-                      res.address
-                    );
+
+                    (async () => {
+                      Swap(
+                        Amount,
+                        { TokenFrom, TokenTo },
+                        res.phrase,
+                        res.address
+                      ).then((res) => {
+                        console.log("TnxStatus -> ", res);
+                        setTnxStatus(res);
+                        setLoading(false);
+                        // setTimeout(() => {
+                        //   navigation.goBack();
+                        // }, 3 * 1000);
+                      });
+                    })();
                   });
                 }
               }}
               borderRadius={999}
               fontFamily={"InterRegular"}
               fontSize={20}
-              // icon={
-              //   completed ? <></> : loading ? <Spinner size="large" /> : <></>
-              // }
+              icon={
+                loading == null ? (
+                  <></>
+                ) : loading ? (
+                  <Spinner size="large" />
+                ) : (
+                  <></>
+                )
+              }
             >
-              {"Swap"}
+              {tnxStatus == null
+                ? "Swap"
+                : tnxStatus == false
+                ? "Failed"
+                : "Success"}
             </Button>
           </YStack>
         </XStack>

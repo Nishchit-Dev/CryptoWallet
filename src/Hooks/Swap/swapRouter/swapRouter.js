@@ -28,15 +28,20 @@ const SwapTx = async (
     sqrtPriceLimitX96: 0,
   };
   console.log("new Tx -> ", tx);
-
+  let estimateGas = await providers().forkedMainet.estimateGas(tx);
+  console.log(estimateGas);
+  // const estimate = await swapRouterContract.connect(wallet).exactInputSingle(tx).estimateGas();
+  // console.log("estimate -> ", estimate);
   try {
     const _tx = await swapRouterContract.connect(wallet).exactInputSingle(tx, {
-      gasLimit: ethers.hexlify("0x500000"),
-      // nonce:await providers().forkedMainet.getTransactionCount(recepit)
+      gasLimit: ethers.hexlify("0x900000"),
+      nonce: await providers().forkedMainet.getTransactionCount(address),
       //   // value: ethers.utils.parseEther(_amountIn.toString(), 18),
     });
     const recepit = await _tx.wait();
     console.log("Swap-recipt -> ", recepit);
+
+    return recepit.status == 0 ? false : true;
   } catch (e) {
     console.log(e);
   }
@@ -84,7 +89,7 @@ const Swap_Tnx = async (
     provider
   );
 
-  await SwapTx(
+  return await SwapTx(
     immutables,
     address,
     amount,
