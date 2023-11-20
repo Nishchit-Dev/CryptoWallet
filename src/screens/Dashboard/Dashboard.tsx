@@ -1,4 +1,4 @@
-import { Text, XStack, YStack, Spinner, Image } from "tamagui";
+import { Text, XStack, YStack, Spinner, Image, ScrollView } from "tamagui";
 import { ColorPallate } from "../../customization/custom";
 import Eth from "../Assets/eth-ic.svg";
 import Menu_ from "../Assets/menu-ic.svg";
@@ -72,9 +72,17 @@ const ReceiveButton = () => {
 };
 
 const SwapButton = () => {
+  const contextNav = useContext(NavigationContext);
+
   return (
     <>
-      <YStack alignItems="center" gap={11}>
+      <YStack
+        alignItems="center"
+        gap={11}
+        onPress={() => {
+          contextNav.navigate("Settings");
+        }}
+      >
         <Swap />
         <Text fontSize={12} fontFamily={"InterRegular"}>
           Swap
@@ -120,6 +128,16 @@ const AssetsView = ({ address, amount }) => {
       </XStack>
       <XStack justifyContent="center" alignItems="center">
         <YStack alignItems="center" justifyContent="center">
+          <XStack>
+            <Image
+            h={45}
+            w={45}
+            borderRadius={999}
+              source={{
+                uri: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/512/Ethereum-ETH-icon.png",
+              }}
+            />
+          </XStack>
           <XStack alignItems="center">
             {!amount ? <Spinner size="small" /> : <></>}
             <Text fontSize={32} fontFamily={"InterBold"} color={"white"}>
@@ -165,17 +183,19 @@ const ListOfTokens = ({ wallet }) => {
           Assets
         </Text>
       </XStack>
-      <YStack gap={17}>
-        {List.map((ele, i) => {
-          return <TokenComponent tokenInfo={ele} wallet={wallet} key={i} />;
-        })}
-        {/* <TokenComponent
+      <ScrollView>
+        <YStack gap={17}>
+          {List.map((ele, i) => {
+            return <TokenComponent tokenInfo={ele} wallet={wallet} key={i} />;
+          })}
+          {/* <TokenComponent
           source={Matic}
           TokenName={"Matic"}
           amount={null}
           key={9999}
         /> */}
-      </YStack>
+        </YStack>
+      </ScrollView>
     </>
   );
 };
@@ -188,9 +208,9 @@ export const TokenComponent = ({ tokenInfo, wallet }) => {
   useEffect(() => {
     setInterval(() => {
       (async () => {
-        if(tokenInfo != null){
+        if (tokenInfo != null) {
           let _amount = await checkBalance(
-            providers().goerli,
+            providers().forkedMainet,
             tokenInfo.address,
             wallet,
             tokenInfo.symbol,
@@ -198,7 +218,6 @@ export const TokenComponent = ({ tokenInfo, wallet }) => {
           );
           setAmount(_amount);
         }
-
       })();
     }, 15 * 1000);
   }, []);
@@ -305,7 +324,7 @@ export const Dashboard = ({ naviagte }) => {
       </YStack>
       <YStack
         backgroundColor={ColorPallate.BlackBackgroundColor}
-        paddingBottom={42}
+        paddingBottom={20}
       >
         <FunctionButtons address={address} />
       </YStack>

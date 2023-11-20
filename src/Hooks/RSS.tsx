@@ -11,10 +11,8 @@ export const useFetchBalance = async (
   currentAmount,
   setAmount
 ) => {
-  const infuraUrl =
-    "https://goerli.infura.io/v3/6d41e19677f344b2a0a73aad3d9ed668";
 
-  const provider = new ethers.JsonRpcProvider(infuraUrl);
+  const provider = providers().forkedMainet
 
   let balance;
   setInterval(async () => {
@@ -118,7 +116,8 @@ export const useEstimateGas = () => {
       const infuraUrl =
         "https://polygon-mumbai.infura.io/v3/6d41e19677f344b2a0a73aad3d9ed668";
 
-      const provider = new ethers.JsonRpcProvider(infuraUrl);
+      // const provider = new ethers.JsonRpcProvider(infuraUrl);
+      const provider = providers().goerli
       let estiamtedGas = await provider.getFeeData();
       let gasInEthers = ethers.formatEther(
         ethers.toNumber(estiamtedGas.gasPrice) * 21000

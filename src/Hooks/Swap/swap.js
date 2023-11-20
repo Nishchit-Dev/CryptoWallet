@@ -52,19 +52,32 @@ export const Swap = async (Amount, TokenInfo, Wallet, UserAddress) => {
   //     TokenInfo.TokenTo.address == "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6")
   // ) {
   if (
-    TokenInfo.TokenFrom.address == "0x4f7A67464B5976d7547c860109e4432d50AfB38e"
+    TokenInfo.TokenFrom.address ==
+      "0x73bFE136fEba2c73F441605752b2B8CAAB6843Ec" &&
+    TokenInfo.TokenTo.address == "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
   ) {
     const TnxRecepit = await WrapTokens(
       wallectConnted,
       provider,
-      tokens().wrappedEtherToken.address,
-      tokens().wrappedEtherToken.symbol,
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "WETH",
+      amount
+    );
+    return TnxRecepit;
+  } else if (
+    TokenInfo.TokenFrom.address == "0x73bFE136fEba2c73F441605752b2B8CAAB6843Ec"
+  ) {
+    const TnxRecepit = await WrapTokens(
+      wallectConnted,
+      provider,
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "WETH",
       amount
     );
 
     TokenInfo.TokenFrom = {
       name: "Wrapped Ether",
-      address: "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
+      address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
       symbol: "WETH",
       decimals: 18,
       chainId: 5,
@@ -136,21 +149,21 @@ export const Swap = async (Amount, TokenInfo, Wallet, UserAddress) => {
     WalletAddress,
     state.sqrtPriceX96,
     TokenInfo
-    );
+  );
 
   await checkBalance(
     provider,
-    tokens().wrappedEtherToken.address,
+    TokenInfo.TokenFrom.address,
     WalletAddress,
-    tokens().wrappedEtherToken.symbol,
-    tokens().wrappedEtherToken.decimals
+    TokenInfo.TokenFrom.symbol,
+    TokenInfo.TokenFrom.decimals
   );
   await checkBalance(
     provider,
-    tokens().uniswapToken.address,
+    TokenInfo.TokenTo.address,
     WalletAddress,
-    tokens().uniswapToken.symbol,
-    tokens().uniswapToken.decimals
+    TokenInfo.TokenTo.symbol,
+    TokenInfo.TokenTo.decimals
   );
 };
 

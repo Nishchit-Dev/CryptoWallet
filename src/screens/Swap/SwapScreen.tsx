@@ -11,6 +11,7 @@ import { Swap } from "../../Hooks/Swap/swap.js";
 import { useSelector } from "react-redux";
 import { GetPrivateKey } from "../../Hooks/StorePrivateKey";
 const SwapScreen = () => {
+  const [Amount,setAmount] = useState("0.01");
   const open = () => {
     console.log("open");
   };
@@ -24,7 +25,6 @@ const SwapScreen = () => {
   const wallet = GetPrivateKey().then((res) => {
     return res;
   });
-  const Amount = 0.0001;
 
   return (
     <>
@@ -39,8 +39,8 @@ const SwapScreen = () => {
       >
         <TotalAsset />
 
-        <TokenSelect setToken={setTokenFrom} flag={"from"} />
-        <TokenSelect setToken={setTokenTo} flag={"to"} />
+        <TokenSelect setToken={setTokenFrom} flag={"from"} setAmount={setAmount} Amount={Amount}/>
+        <TokenSelect setToken={setTokenTo} flag={"to"} setAmount={setAmount}  Amount={Amount}/>
 
         {/* <WrappedComponent/> */}
         <XStack marginVertical={10}>

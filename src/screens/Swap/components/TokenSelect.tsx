@@ -1,4 +1,4 @@
-import { Image, Text, XStack, YStack } from "tamagui";
+import { Image, Input, Text, XStack, YStack } from "tamagui";
 import { ColorPallate } from "../../../customization/custom";
 import ArrowDown from "../../Assets/arrow-down-ic.svg";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 const DefaultSrc =
   "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png";
 
-export const TokenSelect = ({ setToken, flag }) => {
+export const TokenSelect = ({ setToken, flag, setAmount,amount }) => {
   const [open, setOpen] = useState(false);
   const TokenInfo = useSelector((state) => {
     return flag == "from"
@@ -60,10 +60,8 @@ export const TokenSelect = ({ setToken, flag }) => {
         <YStack>
           {/* <Text fontFamily={"InterRegular"}>Amount</Text>
            */}
-           <Amount amount={12.892} data={TokenInfo}/>
-          <YStack>
-            <Text fontFamily={"InterRegular"}>max</Text>
-          </YStack>
+          <Amount setAmount={setAmount} amount={amount} data={TokenInfo} />
+         
         </YStack>
 
         <Text fontFamily={"InterRegular"}>$23.244</Text>
@@ -77,15 +75,30 @@ export const TokenSelect = ({ setToken, flag }) => {
   );
 };
 
-const Amount = ({ amount, data }) => {
+const Amount = ({ amount, setAmount, data }) => {
   return (
     <>
       <XStack justifyContent="center" alignItems="center">
         <YStack alignItems="center" justifyContent="center">
           <XStack alignItems="center">
-            <Text fontSize={32} fontFamily={"InterBold"} color={"white"}>
+            <Input
+              value={amount}
+              onChangeText={setAmount}
+              backgroundColor={"$colorTransparent"}
+              defaultValue="0.01"
+              keyboardType="numeric"
+              caretHidden
+              textAlignVertical="bottom"
+              fontSize={32}
+              borderColor="$colorTransparent"
+              focusStyle={{
+                borderColor: "$colorTransparent",
+              }}
+              fontFamily={"InterBold"}
+            />
+            {/* <Text fontSize={32} fontFamily={"InterBold"} color={"white"}>
               {amount}
-            </Text>
+            </Text> */}
             <Text
               fontSize={32}
               fontFamily={"InterBold"}

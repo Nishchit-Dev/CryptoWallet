@@ -1,6 +1,7 @@
 const ethers = require("ethers");
 const { tokens } = require("../constant/tokens/tokens");
 const { Abi } = require("../constant/abi/abi");
+const { providers } = require("../provider/provider");
 
 // swaprouter address deployment address of Uniswap
 const swapRouterAddress = "0xE592427A0AEce92De3Edee1F18E0157C05861564";
@@ -31,6 +32,7 @@ const SwapTx = async (
   try {
     const _tx = await swapRouterContract.connect(wallet).exactInputSingle(tx, {
       gasLimit: ethers.hexlify("0x500000"),
+      // nonce:await providers().forkedMainet.getTransactionCount(recepit)
       //   // value: ethers.utils.parseEther(_amountIn.toString(), 18),
     });
     const recepit = await _tx.wait();
