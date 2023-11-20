@@ -6,8 +6,8 @@ import { useFetchHistroy } from "../../Hooks/RSS";
 import { useSelector } from "react-redux";
 
 const TnxComponent = ({ TnxList, address }) => {
-  const SendOrReceiveStatus = (from, address) => {
-    if (from == address) {
+  const SendOrReceiveStatus = (to, address) => {
+    if (to != address) {
       // Red - send ethers
 
       return ColorPallate.Failure;
@@ -33,7 +33,8 @@ const TnxComponent = ({ TnxList, address }) => {
                   marginLeft={3}
                   marginVertical={4}
                   width={5}
-                  backgroundColor={SendOrReceiveStatus(data.from, address)}
+                  borderRadius={999}
+                  backgroundColor={SendOrReceiveStatus(data.to, address)}
                 ></YStack>
                 <YStack padding={8}>
                   <Text
@@ -51,7 +52,7 @@ const TnxComponent = ({ TnxList, address }) => {
                     To : {shortAddress(data.to)}
                   </Text>
                   <Text fontSize={20} fontFamily={"InterBold"}>
-                    Amount : {parseFloat(data.amount).toFixed(7)} Eth
+                    Amount : {(data.amount)} Eth
                   </Text>
                 </YStack>
               </YStack>

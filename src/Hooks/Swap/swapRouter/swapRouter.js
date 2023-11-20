@@ -1,7 +1,7 @@
 const ethers = require("ethers");
 const { tokens } = require("../constant/tokens/tokens");
 const { Abi } = require("../constant/abi/abi");
-const { default: BigNumber } = require("bignumber.js");
+const { providers } = require("../provider/provider");
 
 // swaprouter address deployment address of Uniswap
 const swapRouterAddress = "0xE592427A0AEce92De3Edee1F18E0157C05861564";
@@ -12,11 +12,19 @@ const SwapTx = async (
   _amountIn,
   swapRouterContract,
   wallet,
-  sqrtPriceX96
+  sqrtPriceX96,
+  TokenInfo
 ) => {
   let tx = {
+<<<<<<< HEAD
     tokenIn: await immutables.token0(),
     tokenOut: await immutables.token1(),
+=======
+    // swap this two
+    tokenIn: TokenInfo.TokenFrom.address,
+    tokenOut: TokenInfo.TokenTo.address,
+
+>>>>>>> Swap
     fee: await immutables.fee(),
     recipient: address,
     deadline: Math.floor(Date.now() / 1000 + 60 * 10),
@@ -24,15 +32,25 @@ const SwapTx = async (
     amountOutMinimum: 0,
     sqrtPriceLimitX96: 0,
   };
-  console.log("Tx -> ", tx);
-
+  console.log("new Tx -> ", tx);
+  let estimateGas = await providers().forkedMainet.estimateGas(tx);
+  console.log(estimateGas);
+  // const estimate = await swapRouterContract.connect(wallet).exactInputSingle(tx).estimateGas();
+  // console.log("estimate -> ", estimate);
   try {
     const _tx = await swapRouterContract.connect(wallet).exactInputSingle(tx, {
+<<<<<<< HEAD
       gasLimit:600000,
+=======
+      gasLimit: ethers.hexlify("0x900000"),
+      nonce: await providers().forkedMainet.getTransactionCount(address),
+>>>>>>> Swap
       //   // value: ethers.utils.parseEther(_amountIn.toString(), 18),
     });
     const recepit = await _tx.wait();
     console.log("Swap-recipt -> ", recepit);
+
+    return recepit.status == 0 ? false : true;
   } catch (e) {
     console.log(e);
   }
@@ -63,28 +81,31 @@ const Swap_Tnx = async (
   wallet,
   immutables,
   address,
-  sqrtPriceX96
+  sqrtPriceX96,
+  TokenInfo
 ) => {
   const swapRouterContract = new ethers.Contract(
     swapRouterAddress,
     Abi.SwapRouterAbi,
     provider
   );
-
+  console.log(TokenInfo.TokenFrom);
   await approveCall(
-    tokens().wrappedEtherToken.address,
+    // swaping this also
+    TokenInfo.TokenFrom.address,
     amount,
     wallet,
     provider
   );
 
-  await SwapTx(
+  return await SwapTx(
     immutables,
     address,
     amount,
     swapRouterContract,
     wallet,
-    sqrtPriceX96
+    sqrtPriceX96,
+    TokenInfo
   );
 };
 

@@ -171,6 +171,18 @@ export const WrappedComponent = ({ setToken }) => {
           alignItems="baseline"
         >
           <ScrollView width="100%" showsVerticalScrollIndicator={false}>
+            <Token
+              data={{
+                address: "0x73bFE136fEba2c73F441605752b2B8CAAB6843Ec",
+                name: "ETH",
+                symbol: "ETH",
+                logoURI:
+                  "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/512/Ethereum-ETH-icon.png",
+                decimals: "18",
+              }}
+              i={"uniqueKey"}
+              setToken={setToken}
+            />
             {Constant.token.map((data, i) => {
               return <Token data={data} i={i + 1} setToken={setToken} />;
             })}

@@ -14,6 +14,10 @@ import { History } from "./src/screens/History/History";
 import store from "./src/Store/store";
 import { Provider } from "react-redux";
 import SwapScreen from "./src/screens/Swap/SwapScreen";
+import { CreateNewPassword } from "./src/screens/password/CreateNewPassword";
+import { ResetPassword } from "./src/screens/password/RestPassword";
+import { Setting } from "./src/screens/Settings/Settings";
+import { RevealSecretKey } from "./src/screens/RevealSecretKey/RevealSecretKey";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +27,7 @@ export default function Main() {
     InterBold: require("./assets/Poppins-Bold.ttf"),
     InterRegular: require("./assets/Poppins-Regular.ttf"),
     InterThin: require("./assets/Poppins-Thin.ttf"),
+    InterLight: require("./assets/Poppins-Light.ttf"),
   });
 
   if (!fontsLoaded) {
@@ -58,6 +63,10 @@ export default function Main() {
             <Stack.Screen name="SendCrypto" component={SendCypto} />
             <Stack.Screen name="Scanner" component={Scanner} />
             <Stack.Screen name="History" component={History} />
+            <Stack.Screen name="NewPassword" component={CreateNewPassword} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} />
+            <Stack.Screen name="Settings" component={Setting} />
+            <Stack.Screen name="RevealSecretKey" component={RevealSecretKey} />
           </Stack.Navigator>
         </NavigationContainer>
       </TamaguiProvider>
